@@ -1,0 +1,119 @@
+body {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  position: relative;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.form {
+    border-radius: 2rem;
+    border: 1px solid #00000039;
+    padding: 3rem 2rem;
+    width: 90vw;
+    position: relative;
+    z-index: 100;
+    margin: 0 1rem;
+}
+@media(min-width: 500px) { 
+    .form {
+        width: 55vw;
+    }
+}
+@media(min-width: 798px) { 
+    .form {
+        width: 40vw;
+    }
+}
+@media(min-width: 798px) { 
+    .form {
+        width: 28vw;
+    }
+}
+@media(min-width: 1440px) { 
+    .form {
+        width: 35vw;
+    }
+}
+.form__container {
+    display: block;
+    z-index: 10;
+}
+.form__title {
+    color: #000000;
+    font-size: 4rem;
+    text-align: center;
+    margin: 3rem 0;
+}
+@media(min-width: 1440px) { 
+    .form__title {
+        font-size: 7rem;
+    }
+}
+.form__item {
+    margin-bottom: 3rem;
+}
+.form__input {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--cta);
+    color: #000000;
+    display: block;
+    font-size: 1.6rem;
+    outline: none;
+    padding: 1rem;
+    width: 100%;
+}
+.form__input::placeholder {
+    color: #000000;
+    font-size: 1.4rem;
+    font-weight: 300;
+}
+.form__item:last-child{
+    display: flex;
+    justify-content: center;
+}
+.form__submit {
+    background-color: transparent;
+    border-radius: .5rem;
+    color: var(--cta);
+    font-size: 1.6rem;
+    font-weight: 500;
+    display: inline-block;
+    padding: 1rem 1.8rem;
+    border: 2px solid var(--cta);
+    margin: 3rem 0 0 0;
+    transition: color .3s ease, background-color .3s ease;
+}
+.form__submit:hover {
+    background-color: var(--cta);
+    color: #FFF;
+}
+@media(min-width: 1440px) { 
+    .form__item {
+        margin-bottom: 5rem;
+    }
+    .form__input {
+        font-size: 2.3rem;
+    }
+    .form__input::placeholder {
+        font-size: 2rem;
+    }
+    .form__submit {
+        font-size: 2.4rem;
+        padding: 1.3rem 4rem;
+    }
+}
+
+.alert {
+    background-color: rgba(255, 0, 0, 0.221);
+    padding: 1rem;
+    border-left: 4px solid #f00;
+    text-align: center;
+}
+.alert__text {
+    font-size: 1.6rem;
+    font-weight: 500;
+}

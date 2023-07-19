@@ -1,0 +1,80 @@
+.header {
+    margin-top: 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.header__title {
+    font-size: 2.8rem;
+}
+.header__btn {
+   align-self: flex-end;
+   border: none;
+   outline: none;
+   width: 3.4rem;
+   height: 3.4rem;
+   background-color: var(--cta);
+   border-radius: 50%;
+}
+.header__img {
+    width: 3.2rem;
+    height: 3.2rem;
+    filter: invert(100);
+}
+.header__btn:hover {
+    background-color: #ac17ba98;
+}
+.header__btn:active {
+    background-color: #46034cef;
+}
+.search {
+    margin-top: 2rem;
+    width: 100%;
+}
+.search__input {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    border-radius: .5rem;
+    border: 1px solid #000;
+}
+.modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    justify-content: center;
+    align-items: center;
+    background-color: #45454540;
+}.table {
+    margin-top: 3rem;
+    width: 100%;
+    border-collapse: collapse;
+}
+.table__th {
+    font-size: 1.7rem;
+    text-align: center;
+}
+.table__td {
+    border-bottom: 1px solid #000;
+    padding: 1rem;
+    font-size: 1.6rem;
+    text-align: center;
+}
+.table__actions {
+    height: 100%;
+}
+.table__actions img {
+    width: 1.5rem;
+    height: auto;
+}
+
+.clientes__empty {
+    font-size: 1.8rem;
+    text-align: center;
+    margin-top: 4rem;
+}
+.table__actions img:first-of-type{
+    margin-bottom: 1rem;
+}

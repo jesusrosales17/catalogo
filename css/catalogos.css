@@ -1,0 +1,128 @@
+.header {
+    margin-top: 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.header__btn {
+   align-self: flex-end;
+   border: none;
+   outline: none;
+   width: 3.4rem;
+   height: 3.4rem;
+   background-color: var(--cta);
+   border-radius: 50%;
+}
+.header__img {
+    width: 3.2rem;
+    height: 3.2rem;
+    filter: invert(100);
+}
+.header__btn:hover {
+    background-color: #ac17ba98;
+}
+.header__btn:active {
+    background-color: #46034cef;
+}
+.header__img {
+    width: 3.2rem;
+    height: auto;
+    filter: invert(100);
+}
+.header__title {
+    font-size: 2.8rem;
+    text-align: center;
+    color: var(--headings);
+    justify-self: center;
+}
+.catalogos__list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-top: 3rem;
+    list-style: none;
+}
+.catalogos__item {
+    border: 1px solid #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    height: 12rem;
+}
+.catalogos__item p {
+    color: #000;
+    font-size: 2.4rem;
+}
+.catalogos__actions {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.catalogos__actions img {
+    width: 3.2rem;
+    height: auto;
+}
+.modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    justify-content: center;
+    align-items: center;
+    background-color: #45454540;
+}
+.form {
+    background: #fff;
+    box-shadow: 0 0 1rem #43434373;
+    width: 90%;
+    padding: 2rem;
+    border-radius: 1rem;
+}
+.form__title {
+    text-align: center;
+    font-size: 3rem;
+    margin-bottom: 3.4rem;
+}
+.form__label {
+    display: block;
+    font-size: 1.6rem;
+}
+.form__input {
+    display: block;
+    margin: 1rem 0;
+    padding: 1rem;
+    width: 100%;
+    border-radius: .5rem;
+    border: 1px solid #000;
+    outline: none;
+    font-size: 1.5rem;
+}
+.form__submit {
+    width: 100%;
+    padding: 1rem;
+    color: var(--cta);
+    border: 2px solid var(--cta);
+    background-color: #fff;
+    border-radius: .5rem;
+    transition: background-color .3s ease, color .3s ease;
+    margin-top: 2rem;
+    font-size: 1.5rem;
+}
+.form__submit:hover {
+    background-color: var(--cta);
+    color: #fff;
+}
+.form__exitDiv {
+    display: flex;
+    justify-content: flex-end;
+}
+.form__exit {
+    font-size: 2.4rem;
+    border: none;
+    outline: none;
+    background-color: transparent;
+}

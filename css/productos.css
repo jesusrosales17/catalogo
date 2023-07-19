@@ -1,0 +1,123 @@
+.header {
+    margin-top: 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.header__btn {
+   align-self: flex-end;
+   border: none;
+   outline: none;
+   width: 3.4rem;
+   height: 3.4rem;
+   background-color: var(--cta);
+   border-radius: 50%;
+}
+.header__img {
+    width: 3.2rem;
+    height: 3.2rem;
+    filter: invert(100);
+}
+.header__btn:hover {
+    background-color: #ac17ba98;
+}
+.header__btn:active {
+    background-color: #46034cef;
+}
+.search {
+    margin-top: 2rem;
+    width: 100%;
+}
+.search__input {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    border-radius: .5rem;
+    border: 1px solid #000;
+}
+.table {
+    margin-top: 3rem;
+    width: 100%;
+    border-collapse: collapse;
+}
+.table__th {
+    font-size: 1.7rem;
+    text-align: center;
+}
+.table__td {
+    border-bottom: 1px solid #000;
+    padding: 1rem;
+    font-size: 1.6rem;
+    text-align: center;
+}
+.table__actions {
+    height: 100%;
+}
+.table__actions img {
+    width: 1.5rem;
+    height: auto;
+}
+.modal {
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: #35353549;
+    display: flex;
+    justify-content: center;
+    padding: 2rem 0;
+}
+.modal__container {
+    background: #fff;
+    box-shadow: 0 0 1rem #43434373;
+    width: 90%;
+    padding: 2rem;
+    border-radius: 1rem;
+}
+.modal__title {
+    font-size: 2.7rem;
+    text-align: center;
+    margin-bottom: 3rem;
+}
+.modal__p {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 1.4rem;
+}
+.modal__span {
+    font-size: 1.6rem;
+    font-weight: 400;
+}
+.modal__exitDiv {
+    display: flex;
+    justify-content: flex-end;
+}
+.modal__exit {
+    font-size: 2.3rem;
+    border: none;
+    outline: none;
+    background-color: transparent;
+}
+.modal__img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 4rem;
+}
+.modal__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 2rem;
+}
+.modal__footer img {
+    width: 2.8rem;
+    height: auto;
+}
+.productos__empty {
+    font-size: 1.8rem;
+    text-align: center;
+    margin-top: 4rem;
+}
