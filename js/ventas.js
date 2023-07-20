@@ -4,11 +4,76 @@ const selectClient = document.getElementById("client");
 const modal = document.getElementById("modal");
 const btnCloseModal = document.getElementById("btnModalExit");
 const listSale = document.getElementById("list-products");
-
+const btnShowModalPay = document.getElementById("btnShowModalPay");
+const btnCloseModalPay = document.getElementById("btnCloseModalPay");
+const modalPay = document.getElementById("modalPay");
+const formPay = document.getElementById("formPay");
+const inputAmountPay = document.getElementById("inputAmountPay");
+const modalHistory = document.getElementById("modalHistory");
+const btnCloseModalHistory = document.getElementById("btnCloseModalHistory");
+const btnShowModalHistory = document.getElementById("btnShowModalHistory");
 let dataSales = [];
 let dataProducts = [];
 let dataCatalogos = [];
 let dataClients = [];
+
+let idSale = null;
+
+const onSubmit = async (e) => {
+  e.preventDefault();
+
+  if (inputAmountPay.value === "" || inputAmountPay.value <= 0) {
+    Swal.fire({
+      icon: "error",
+      title: "Ocurrio un error!",
+      text: "La cantidad a pagar es obligaria y tiene que ser mayor a 0",
+    });
+    return;
+  }
+
+  const formData = new FormData(formPay);
+  formData.append("idSale", idSale);
+
+  const response = await fetch(`http://sistema.test/api/registrarPago.php`, {
+    method: "POST",
+    body: formData,
+  });
+  const result = await response.json();
+  console.log(result);
+
+  if (result.code === 200) {
+    Swal.fire({
+      icon: "success",
+      title: "Todo listo!",
+      text: result.msg,
+    }).then(() => {
+      location.reload();
+    });
+  } else {
+    Swal.fire({
+      icon: "error",
+      title: "Ocurrio un error!",
+      text:
+        result.msg || "Ocurrio un error inesperado intentelo denuevo más tarde",
+    });
+  }
+};
+
+const closeModalPay = () => {
+  modalPay.style.display = "none";
+  btnCloseModal.removeEventListener("click", showModal);
+  idSale = null;
+};
+const showModalPay = (sale) => {
+  modalPay.style.display = "flex";
+
+  inputAmountPay.value =
+    (sale.totalDeVenta - sale.cantidadPagada) / (sale.cantidadPagos - sale.pagosRealizados);
+
+    document.querySelector('#divButtonPay').style.display = (sale.cantidadPagos !== sale.pagosRealizados);
+
+  idSale = sale.idVenta;
+};
 
 const createProductsSaleHTML = (product, sale) => {
   const dataProduct = dataProducts.find(
@@ -84,6 +149,15 @@ const createProductsSaleHTML = (product, sale) => {
   listSale.appendChild(li);
 };
 
+const closeModalHistory = () => {
+  modalHistory.style.display = "none";
+  btnShowModalHistory.removeEventListener("click", showModalHistory);
+}
+const showModalHistory = (sale) => {
+  modalHistory.style.display = 'block';
+  console.log(sale);
+}
+
 function showProductsSale(products, sale) {
   console.log(products);
   while (listSale.firstChild) {
@@ -95,8 +169,12 @@ function showProductsSale(products, sale) {
 }
 
 const showModal = (products, sale) => {
-  console.log(products);
+  btnShowModalPay.addEventListener("click", () => showModalPay(sale));
+  btnShowModalHistory.addEventListener("click", () => showModalHistory(sale));
+
   modal.style.display = "block";
+  document.getElementById("divButtonPay").style.display =
+    Number(sale.totalDeVenta) != Number(sale.cantidadPagada) ? "flex" : "none";
   console.log(JSON.parse(sale.pedido));
   let productsFilter = [];
 
@@ -138,10 +216,10 @@ const showModal = (products, sale) => {
     default:
       break;
   }
-  document.querySelector('#spanWayToPay').textContent = text;
-  document.querySelector('#spanTotalPayments').textContent = sale.cantidadPagos;
-  document.querySelector('#spanPaymentsMade').textContent = sale.pagosRealizados;
-
+  document.querySelector("#spanWayToPay").textContent = text;
+  document.querySelector("#spanTotalPayments").textContent = sale.cantidadPagos;
+  document.querySelector("#spanPaymentsMade").textContent =
+    sale.pagosRealizados;
 
   showProductsSale(productsFilter, sale);
 };
@@ -212,8 +290,8 @@ const createSaleHTML = (sale) => {
   viewSaleImg.alt = "Ver catalogo";
   viewSaleImg.addEventListener("click", () => showModal(dataProducts, sale));
 
-  const editSale = document.createElement('A');
-  editSale.href = './actualizarVenta.php?id='+sale.idVenta;
+  const editSale = document.createElement("A");
+  editSale.href = "./actualizarVenta.php?id=" + sale.idVenta;
   const editSaleImg = document.createElement("IMG");
   editSaleImg.src = "../images/edit.png";
   editSaleImg.alt = "Editar venta";
@@ -297,8 +375,9 @@ const getData = () => {
       console.error("Error al obtener datos:", error);
     });
 };
+
 document.addEventListener("DOMContentLoaded", async () => {
-  getData(); 
+  getData();
 });
 
 selectClient.addEventListener("change", (e) => {
@@ -312,4 +391,7 @@ selectClient.addEventListener("change", (e) => {
     showSales(salesFilter, "No hay ventas registradas para este cliente");
   }
 });
-btnCloseModal.addEventListener('click', closeModal);
+btnCloseModal.addEventListener("click", closeModal);
+btnCloseModalPay.addEventListener("click", closeModalPay);
+formPay.addEventListener("submit", onSubmit);
+btnCloseModalHistory.addEventListener("click", closeModalHistory)

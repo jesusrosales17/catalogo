@@ -35,9 +35,9 @@ isAuth();
             <option value="" selected>-- Elige un cliente --</option>
         </select>
 
-        <section class="container" id="sectionSales">
-            <ul class="sale__list" id="salesContainer" >
-                
+        <section class="container overflow" id="sectionSales">
+            <ul class="sale__list" id="salesContainer">
+
             </ul>
         </section>
 
@@ -61,10 +61,56 @@ isAuth();
                     <p>Cantidad de productos vendidos: <span id="SpanAmountSold"></span></p>
                     <p>Monto total de la compra: <span id="SpanTotalSale"></span></p>
                     <p>Cantidad pagada: <span id="spanAmountPaid"></span></p>
-                    <p>Forma de pago: <span id="spanWayToPay"></span></p> 
+                    <p>Forma de pago: <span id="spanWayToPay"></span></p>
                     <p>Pagos totales: <span id="spanTotalPayments"></span></p>
                     <p>Pagos realizados: <span id="spanPaymentsMade"></span></p>
+                    <div class="modal__buttons">
+                        <div class="modal__divButton" id="divButtonPay">
+                            <button type="button" class="modal__btn" id="btnShowModalPay">Registrar pago</button>
+                        </div>
+
+                        <div class="modal__divButtonHistory">
+                            <button type="button" class="modal__btn modal__btn--history" id="btnShowModalHistory">Historial de pagos</button>
+                        </div>
+                    </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="modal modal--pay" id="modalPay" style="display: none;">
+
+            <form class="form" id="formPay">
+                <div class="modal__exitDiv">
+                    <button type="button" class="modal__exit" id="btnCloseModalPay">x</button>
+                </div>
+                <h2 class="modal__title">Realizar pago</h2>
+
+                <div class="form__item">
+                    <label for="amount" class="form__label">Cantidad a pagar: </label>
+                    <input type="number" step="0.01" name="amount" id="inputAmountPay" placeholder="Cantidad a pagar" class="form__input" min='0' required>
+                </div>
+
+                <input type="submit" value="Registrar pago" class="form__submit">
+        </div>
+        </div>
+
+        <div class="modal modal-history"  id="modalHistory" style="display: none;">
+            <div class="modal__container">
+                <div class="modal__exitDiv">
+                    <button type="button" class="modal__exit" id="btnCloseModalHistory">x</button>
+                </div>
+                <h2 class="modal__title">Historial de pagos</h2>
+
+                <ul class="history__list">
+                    <li class="history__item">
+                        <p>Fecha del pago: <span>22/43/22</span></p>
+                        <p>Cantidad: <span>$200.00</span></p>
+                        <div class="history__buttons">
+                            <img src="../images/edit.png" alt="editar el pago">
+                            <img src="../images/delete.png" alt="eliminar el pago">
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
     </main>

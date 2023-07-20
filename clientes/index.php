@@ -35,7 +35,7 @@ isAuth();
             </form>
         </header>
 
-        <section class="products container" id="container">
+        <section class="products container overflow-3" id="container">
             <table class="table" id="table">
                 <thead class="table__head">
                     <tr class="table__tr table__tr--head">

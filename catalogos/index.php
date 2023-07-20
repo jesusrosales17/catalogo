@@ -32,7 +32,7 @@ isAuth();
             </button>
         </div>
 
-        <section class="container">
+        <section class="container overflow-2">
             <ul class="catalogos__list" id="containerCatalogos">
                 
             </ul>

@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             http_response_code(404);
         }
     } else {
-        $query = "SELECT * FROM productos WHERE activo = '1 '";
+        $query = "SELECT * FROM productos";
         $resp =  $db->query($query);
 
 

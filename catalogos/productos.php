@@ -34,7 +34,7 @@ isAuth();
             </form>
         </header>
 
-        <section class="products container" id="container">
+        <section class="products container overflow-3" id="container">
             <table class="table" id="table">
                 <thead class="table__head">
                     <tr class="table__tr table__tr--head">
@@ -99,17 +99,17 @@ isAuth();
 
                 <div class="form__item">
                     <label for="buyPrice" class="form__label">Precio de compra:</label>
-                    <input type="number" name="buyPrice" id="buyPrice" class="form__input" placeholder="Ej. $1000">
+                    <input type="number" step="0.01" name="buyPrice" id="buyPrice" class="form__input" placeholder="Ej. $1000">
                 </div>
 
                 <div class="form__item">
                     <label for="salePrice" class="form__label">Precio de venta:</label>
-                    <input type="number" name="salePrice" id="salePrice" class="form__input" placeholder="Ej. $1000">
+                    <input type="number" step="0.01" name="salePrice" id="salePrice" class="form__input" placeholder="Ej. $1000">
                 </div>
 
                 <div class="form__item">
                     <label for="amound" class="form__label">Cantidad de productos:</label>
-                    <input type="number" name="amound" id="amound" class="form__input" placeholder="Ej. 6">
+                    <input type="number"  name="amound" id="amound" class="form__input" placeholder="Ej. 6">
                 </div>
                 
 

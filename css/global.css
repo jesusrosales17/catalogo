@@ -42,6 +42,20 @@ body {
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     border-radius: 2rem;
     margin: auto;
+    /* overflow: auto; */
+    /* position: relative; */
+}
+.overflow {
+    height: calc(90vh - 27.9rem);
+    overflow: auto;
+}
+.overflow-2 {
+        height: calc(90vh - 18rem);
+        overflow: auto;
+}
+.overflow-3 {
+        height: calc(90vh - 23rem);
+        overflow: auto;
 }
 .login {
     display: flex;
@@ -61,10 +75,19 @@ body {
     transform: rotateY(185deg) rotateX(174deg);;
 }
 .iconMenu {
-    margin-top: 2rem;
     margin-left: auto;
     display: flex;
     justify-content: flex-end;
+    /* position: fixed; */
+    /* top: 6rem; */
+    /* right: 8.5%; */
+    /* background-color: #fff; */
+    /* z-index: 10; */
+}
+.nav {
+    background-color: #fff;
+    z-index: 20;
+    padding: 2rem 0;
 }
 .nav__ul {
     background-color: #fff;

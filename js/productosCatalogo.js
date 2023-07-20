@@ -126,7 +126,8 @@ const deleteProduct = () => {
         ArrayProducts = ArrayProducts.filter(
           (producto) => producto.idProducto != idForActions
         );
-        showProducts(arrayCatalogos);
+        showProducts(ArrayProducts);
+        closeModalProduct();
       } else {
         Swal.fire({
           icon: "error",

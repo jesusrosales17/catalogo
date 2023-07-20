@@ -474,7 +474,7 @@ const getData = () => {
     .then((results) => {
       dataClientes = results[0];
       dataCatalogos = results[1];
-      dataProductos = results[2];
+      dataProductos = results[2].filter(product => product.activo === '1');
 
       showCatalogos(dataCatalogos);
       showClientsOption(dataClientes);
