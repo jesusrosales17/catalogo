@@ -78,6 +78,17 @@ if ($_SERVER['REQUEST_METHOD']  === 'POST') {
 
 
 
+            foreach ($arrayPedido as $pedido) {
+                //ver si el pedido es nuevo
+                $exist = buscarElemento($arraySalePrevious, 'idProducto', $pedido['idProducto']);
+                if (!$exist) {
+                    $producto = buscarElemento($data, 'idProducto', $pedido['idProducto']);
+                    $cantidad = $producto['cantidadProducto'] - $pedido['cantidadAVender'];
+                    $query = "UPDATE productos SET cantidadProducto = '$cantidad' WHERE idProducto = " . $producto['idProducto'];
+                    $resp = $db->query($query);
+                    $totalPedido += $producto['precioVenta'] * $pedido['cantidadAVender'];
+                }
+            }
 
 
             foreach ($arraySalePrevious as $previusSale) {
@@ -102,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD']  === 'POST') {
                             if ($previusSale['cantidadAVender'] === $pedido['cantidadAVender']) {
                                 $totalPedido += $dataProduct['precioVenta'] * $pedido['cantidadAVender'];
                             } else {
-                               
+
                                 $cant = 0;
                                 if ($previusSale['cantidadAVender'] > $pedido['cantidadAVender']) {
                                     //calcular la diferencia
@@ -112,15 +123,15 @@ if ($_SERVER['REQUEST_METHOD']  === 'POST') {
                                     //actualizar la cantidad del producto en la base de datos
                                     $cant += $dataProduct['cantidadProducto'];
                                 } elseif ($previusSale['cantidadAVender'] < $pedido['cantidadAVender']) {
-                                    
+
                                     //ver si no sobrepasa la cantidad de productos
                                     // y calcular la diferencia para quitarsela al producto
-                                   
-                                    if ( intval( $pedido['cantidadAVender'] ) > intval($dataProduct['cantidadProducto']) + intval($previusSale['cantidadAVender']) ) {
-                                        
+
+                                    if (intval($pedido['cantidadAVender']) > intval($dataProduct['cantidadProducto']) + intval($previusSale['cantidadAVender'])) {
+
                                         $cant = $previusSale['cantidadAVender'];
                                         $totalPedido += $dataProduct['precioVenta'] * $previusSale['cantidadAVender'];
-                                    } else { 
+                                    } else {
                                         $cant = $pedido['cantidadAVender'] - $previusSale['cantidadAVender'];
                                         $totalPedido += $dataProduct['precioVenta'] * $pedido['cantidadAVender'];
                                     }
@@ -130,7 +141,7 @@ if ($_SERVER['REQUEST_METHOD']  === 'POST') {
                                 }
                                 //actualizar la cantidad del producto  en la base de datos
                                 $query = "UPDATE productos SET cantidadProducto = '$cant' WHERE idProducto = " . $previusSale['idProducto'];
-                                
+
                                 $response = $db->query($query);
                             }
                         }
@@ -139,7 +150,7 @@ if ($_SERVER['REQUEST_METHOD']  === 'POST') {
             }
 
 
-          
+
 
 
             if ($wayToPay == 1) {
@@ -152,6 +163,9 @@ if ($_SERVER['REQUEST_METHOD']  === 'POST') {
 
 
             if ($result) {
+
+
+
                 $resp = [
                     "code" => 200,
                     "msg" => "Venta actualizada correctamente"
