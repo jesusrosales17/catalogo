@@ -12,13 +12,20 @@ const inputAmountPay = document.getElementById("inputAmountPay");
 const modalHistory = document.getElementById("modalHistory");
 const btnCloseModalHistory = document.getElementById("btnCloseModalHistory");
 const btnShowModalHistory = document.getElementById("btnShowModalHistory");
+const listHistory = document.getElementById("listHistory");
+
 let dataSales = [];
 let dataProducts = [];
 let dataCatalogos = [];
 let dataClients = [];
+let dataPagos = [];
+
+let isUpdatingPayment = false;
 
 let idSale = null;
+let idPayment = null;
 
+// se encarga de agregar y actualizar los pagos
 const onSubmit = async (e) => {
   e.preventDefault();
 
@@ -33,13 +40,20 @@ const onSubmit = async (e) => {
 
   const formData = new FormData(formPay);
   formData.append("idSale", idSale);
+  if (isUpdatingPayment) {
+    formData.append("idPayment", idPayment);
+  }
 
-  const response = await fetch(`http://sistema.test/api/registrarPago.php`, {
-    method: "POST",
-    body: formData,
-  });
+  const response = await fetch(
+    `http://sistema.test/api/${
+      isUpdatingPayment ? "updatePago.php" : "pagos.php"
+    }`,
+    {
+      method: "POST",
+      body: formData,
+    }
+  );
   const result = await response.json();
-  console.log(result);
 
   if (result.code === 200) {
     Swal.fire({
@@ -58,23 +72,77 @@ const onSubmit = async (e) => {
     });
   }
 };
-
+// cierra el modal de pagos
 const closeModalPay = () => {
   modalPay.style.display = "none";
   btnCloseModal.removeEventListener("click", showModal);
   idSale = null;
+  isUpdatingPayment = false;
+  idPayment = null;
 };
+// muestra el modal de pagos
 const showModalPay = (sale) => {
+  console.log(sale);
   modalPay.style.display = "flex";
 
-  inputAmountPay.value =
-    (sale.totalDeVenta - sale.cantidadPagada) / (sale.cantidadPagos - sale.pagosRealizados);
-
-    document.querySelector('#divButtonPay').style.display = (sale.cantidadPagos !== sale.pagosRealizados);
+  if (isUpdatingPayment) {
+    inputAmountPay.value = sale.cantidadPago;
+  } else {
+    inputAmountPay.value =
+      (sale.totalDeVenta - sale.cantidadPagada) /
+      (sale.cantidadPagos - sale.pagosRealizados);
+  }
 
   idSale = sale.idVenta;
-};
 
+  formPay.querySelector(".form__submit").value = isUpdatingPayment
+    ? "Actualizar pago"
+    : "Registrar Pago";
+  formPay.querySelector(".modal__title").textContent = isUpdatingPayment
+    ? "Actualizar pago"
+    : "Registrar Pago";
+};
+// elimina un pago
+const deletePayment = () => {
+  Swal.fire({
+    title: "Estas seguro?",
+    text: "El pago sera eliminado completamente",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "si, Eliminar pago!",
+    cancelButtonText: "cancelar",
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      console.log(idPayment);
+      const response = await fetch(`http://sistema.test/api/deletePago.php`, {
+        method: "POST",
+        body: JSON.stringify({ idPayment: idPayment }),
+      });
+      const result = await response.json();
+
+      if (result.code === 200) {
+        Swal.fire({
+          icon: "success",
+          title: "Todo listo!",
+          text: result.msg,
+        }).then(() => {
+          window.location.reload();
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Ocurrio un error!",
+          text:
+            result.msg ||
+            "Ocurrio un error inesperado intentelo denuevo más tarde",
+        });
+      }
+    }
+  });
+};
+// muestra el html de los productos vendidos
 const createProductsSaleHTML = (product, sale) => {
   const dataProduct = dataProducts.find(
     (p) => p.idProducto === product.idProducto
@@ -149,15 +217,81 @@ const createProductsSaleHTML = (product, sale) => {
   listSale.appendChild(li);
 };
 
+// crea el html de los pagos
+const createPaymentsHTML = (payment, sale) => {
+  const li = document.createElement("LI");
+  li.classList.add("history__item");
+
+  const year = document.createElement("P");
+  year.textContent = "Fecha de. pago: ";
+  const yearSpan = document.createElement("SPAN");
+  yearSpan.textContent = payment.fechaDelPago.split(" ")[0];
+
+  const amount = document.createElement("P");
+  amount.textContent = "Cantidad: ";
+  const amountSpan = document.createElement("SPAN");
+  amountSpan.textContent = "$" + payment.cantidadPago;
+
+  const containerButtons = document.createElement("DIV");
+  containerButtons.classList.add("history__buttons");
+
+  const edit = document.createElement("IMG");
+  edit.src = "../images/edit.png";
+  edit.alt = "Editar pago";
+  edit.addEventListener("click", () => {
+    idPayment = payment.idPago;
+    closeModalHistory();
+    showModalPay(payment);
+  });
+
+  const remove = document.createElement("IMG");
+  remove.src = "../images/delete.png";
+  remove.alt = "Eliminar pago";
+  remove.addEventListener("click", () => {
+    idPayment = payment.idPago;
+    deletePayment();
+  });
+
+  year.appendChild(yearSpan);
+  amount.appendChild(amountSpan);
+
+  li.appendChild(year);
+  li.appendChild(amount);
+
+  if(dataClients.find(client => client.idCliente === sale.idCliente).activo !== '0') {
+    containerButtons.appendChild(edit);
+    containerButtons.appendChild(remove);
+    li.appendChild(containerButtons);
+  }
+
+
+ 
+
+  listHistory.appendChild(li);
+};
+
+// muestra los pagos
+const showPayments = (payments, sale) => {
+  while (listHistory.firstChild) {
+    listHistory.removeChild(listHistory.firstChild);
+  }
+
+  payments.forEach((payment) => {
+    createPaymentsHTML(payment, sale);
+  });
+};
+// cierra el modal del historial de pagos
 const closeModalHistory = () => {
   modalHistory.style.display = "none";
   btnShowModalHistory.removeEventListener("click", showModalHistory);
-}
+};
+// muestra el modal del historial de pagos
 const showModalHistory = (sale) => {
-  modalHistory.style.display = 'block';
-  console.log(sale);
-}
-
+  modalHistory.style.display = "block";
+  showPayments(dataPagos.filter((p) => p.idVenta === sale.idVenta), sale);
+  isUpdatingPayment = true;
+};
+// muestra los productos vendidos
 function showProductsSale(products, sale) {
   console.log(products);
   while (listSale.firstChild) {
@@ -167,15 +301,20 @@ function showProductsSale(products, sale) {
     createProductsSaleHTML(product, sale);
   });
 }
-
+// muestra el modal de informacion de la venta
 const showModal = (products, sale) => {
+  modal.style.display = "block";
+
   btnShowModalPay.addEventListener("click", () => showModalPay(sale));
   btnShowModalHistory.addEventListener("click", () => showModalHistory(sale));
 
-  modal.style.display = "block";
-  document.getElementById("divButtonPay").style.display =
-    Number(sale.totalDeVenta) != Number(sale.cantidadPagada) ? "flex" : "none";
-  console.log(JSON.parse(sale.pedido));
+  if(dataClients.find(client => client.idCliente === sale.idCliente).activo === '0') {
+    document.getElementById("divButtonPay").style.display =  "none";
+    
+  } else {
+    document.getElementById("divButtonPay").style.display =  Number(sale.totalDeVenta) > Number(sale.cantidadPagada) ? "flex" : "none";
+  }
+  document.getElementById("divButtonHistory").style.display =  sale.pagosRealizados === "0" ? "none" : "block";
   let productsFilter = [];
 
   let amount = 0;
@@ -223,17 +362,18 @@ const showModal = (products, sale) => {
 
   showProductsSale(productsFilter, sale);
 };
+// cierra el modal de la informacion de la venta
 const closeModal = () => {
   modal.style.display = "none";
 };
-
+// crea el html de los clientes
 const createClientOptionHTML = (client) => {
   const option = document.createElement("option");
   option.value = client.idCliente;
   option.textContent = client.nombreCompleto;
   selectClient.appendChild(option);
 };
-
+// muestra los clientes en el select
 const showClientsOption = (clients) => {
   clients.forEach((client) => {
     createClientOptionHTML(client);
@@ -306,7 +446,12 @@ const createSaleHTML = (sale) => {
   //   deleteSaleImg.addEventListener("click", () => deleteCatalogo(idCatalogo));
 
   containerActions.appendChild(viewSaleImg);
-  containerActions.appendChild(editSale);
+  if (
+    dataClients.find((client) => client.idCliente === sale.idCliente).activo ===
+    "1"
+  ) {
+    containerActions.appendChild(editSale);
+  }
   // containerActions.appendChild(deleteSaleImg);
 
   li.appendChild(nameClient);
@@ -352,12 +497,14 @@ const getData = () => {
   const urlProducts = "http://sistema.test/api/productos.php";
   const urlVentas = "http://sistema.test/api/ventas.php";
   const urlCatalogo = "http://sistema.test/api/catalogo.php";
+  const urlPagos = "http://sistema.test/api/pagos.php";
 
   const promises = [
     fetchDataFromAPI(urlClientes),
     fetchDataFromAPI(urlVentas),
     fetchDataFromAPI(urlProducts),
     fetchDataFromAPI(urlCatalogo),
+    fetchDataFromAPI(urlPagos),
   ];
 
   Promise.all(promises)
@@ -366,6 +513,7 @@ const getData = () => {
       dataSales = results[1];
       dataProducts = results[2];
       dataCatalogos = results[3];
+      dataPagos = results[4];
 
       showSales(dataSales);
       showClientsOption(dataClients);
@@ -394,4 +542,4 @@ selectClient.addEventListener("change", (e) => {
 btnCloseModal.addEventListener("click", closeModal);
 btnCloseModalPay.addEventListener("click", closeModalPay);
 formPay.addEventListener("submit", onSubmit);
-btnCloseModalHistory.addEventListener("click", closeModalHistory)
+btnCloseModalHistory.addEventListener("click", closeModalHistory);

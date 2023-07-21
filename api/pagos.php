@@ -37,7 +37,7 @@ if($_SERVER['REQUEST_METHOD']  === 'POST') {
             http_response_code(400);
             return;
         }
-       $query = "SELECT pagosRealizados, totalDeVenta, cantidadPagada, cantidadPagos, formaPago  FROM ventas WHERE idVenta = '$idSale'";
+       $query = "SELECT pagosRealizados, totalDeVenta, cantidadPagada, cantidadPagos, formaPago, idCliente  FROM ventas WHERE idVenta = '$idSale'";
        $response = $db->query($query);
        $dataSale = $response->fetch_assoc();;
        $paymentsMade = $dataSale['pagosRealizados'];
@@ -45,17 +45,60 @@ if($_SERVER['REQUEST_METHOD']  === 'POST') {
        $amountPaid = $dataSale['cantidadPagada'];
        $amoundPayments = $dataSale['cantidadPagos'];
        $wayToPay = $dataSale['formaPago'];
+       $idCliente = $dataSale['idCliente'];
 
-       if(floatval($amount) > floatval($totalSale)) {
+       $query = "SELECT activo FROM clientes WHERE idCliente = '$idCliente'";
+       $resp = $db->query($query);
+       $result = $resp->fetch_assoc();
+       $active = $result['activo'];
+
+       if($active === '0') {
         $response = [
             'code'=> 400,
-            'msg' => 'La cantidad a pagar no puede ser mayor al total de la venta'
+            'msg' => 'No se puede realizar el pago ya que el cliente a sido eliminado'
         ];
         
         print_r(json_encode($response));
         http_response_code(400);
         return;
        }
+
+
+       if(intval($paymentsMade) === intval($amoundPayments)) {
+        $response = [
+            'code'=> 400,
+            'msg' => 'Se han cumplido la cantidad de pagos acordada, si deceas agregar mas pagos edita la venta'
+        ];
+        
+        print_r(json_encode($response));
+        http_response_code(400);
+        return;
+       }
+
+
+       if((floatval($amountPaid) + floatval($amount)) > floatval($totalSale)) {
+        $response = [
+            'code'=> 400,
+            'msg' => 'La cantidad pagada exedera la cantidad total de la venta'
+        ];
+        
+        print_r(json_encode($response));
+        http_response_code(400);
+        return;
+       }
+
+
+       if((floatval($amountPaid) + floatval($amount)) > floatval($totalSale)) {
+        $response = [
+            'code'=> 400,
+            'msg' => 'La cantidad pagada exedera la cantidad total de la venta'
+        ];
+        
+        print_r(json_encode($response));
+        http_response_code(400);
+        return;
+       }
+
 
       
        if(intval($wayToPay) === 1 && floatval($amount) !== floatval($totalSale)) {
@@ -83,15 +126,17 @@ if($_SERVER['REQUEST_METHOD']  === 'POST') {
 
 
 
-      if((floatval($amount) + $amountPaid) == $totalSale) {
-        $paymentsMade = $amoundPayments;
-      } else {
+      
         $paymentsMade += 1;
-      }
-
+      
       $amountPaid += floatval($amount); 
 
         $query = "UPDATE ventas SET pagosRealizados = $paymentsMade, cantidadPagada='$amountPaid', cantidadPagos = '$amoundPayments' WHERE idVenta='$idSale'";
+        $result = $db->query($query);
+
+        $idUser = $_SESSION['id'];
+
+        $query  = "INSERT INTO pagos (idVenta, cantidadPago, idUsuario) VALUES ('$idSale', '$amount', '$idUser')";
         $result = $db->query($query);
 
         if ($result) {
@@ -114,8 +159,9 @@ if($_SERVER['REQUEST_METHOD']  === 'POST') {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    $idUser = $_SESSION['id'];
 
-        $query = "SELECT * FROM pagos";
+        $query = "SELECT * FROM pagos ";
         $resp =  $db->query($query);
 
 

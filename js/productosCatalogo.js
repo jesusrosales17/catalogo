@@ -11,6 +11,8 @@ const modalProduct = document.getElementById("modalProduct");
 const btnEdit = document.getElementById("btnEdit");
 const btnDelete = document.getElementById("btnDelete");
 
+const formSearch = document.getElementById('formSearch');
+
 const idByUrl = new URLSearchParams(window.location.search).get("id");
 let ArrayProducts = [];
 let isUpdating = false;
@@ -78,6 +80,8 @@ const showProducts = (
   products,
   msgEmpty = "No hay productos en este catalogo"
 ) => {
+  const errorsAlerts = document.querySelectorAll(".productos__empty");
+  errorsAlerts.forEach((error) => error.remove());
   if (products.length === 0) {
     table.style.display = "none";
     const p = document.createElement("p");
@@ -208,6 +212,7 @@ const validateForm = (form) => {
   form.querySelectorAll("input").forEach((input) => {
     if (input.type !== "submit") {
       if (input.value.trim() === "") {
+        console.log(input)
         if(input.type === 'file' && !isUpdating || input.type !== 'file') {
             resp = {
               error: true,
@@ -303,6 +308,15 @@ const onSubmit = async (e) => {
   }
 };
 
+const searchProduct = (e) =>  {
+  e.preventDefault();
+
+  const formData = new FormData(formSearch);
+  const productSearch = formData.get('search');
+
+  const productsFilter = ArrayProducts.filter(product => product.nombre.includes(productSearch));
+  showProducts(productsFilter, 'No hay productos con ese nombre');
+;}
 
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -314,4 +328,6 @@ btnShowModalForm.addEventListener("click", () => showModalForm());
 btnCloseModalForm.addEventListener("click", closeModalForm);
 btnCloseModalProducto.addEventListener("click", closeModalProduct);
 form.addEventListener("submit", onSubmit);
-btnDelete.addEventListener('click', deleteProduct )
+btnDelete.addEventListener('click', deleteProduct );
+formSearch.addEventListener('submit', searchProduct)
+

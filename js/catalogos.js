@@ -127,12 +127,19 @@ const createCatalogoHTML = (catalogo) => {
 
 // muestra todos los catalogos en su contenedor
 const showCatalogos = (catalogos) => {
-  while (containerCatalogos.firstChild) {
-    containerCatalogos.removeChild(containerCatalogos.firstChild);
+  if (catalogos.length === 0) {
+    const li = document.createElement("li");
+    li.classList.add("catalogos__empty");
+    li.textContent = 'No hay catalogos';
+    containerCatalogos.appendChild(li);
+  } else {
+    while (containerCatalogos.firstChild) {
+      containerCatalogos.removeChild(containerCatalogos.firstChild);
+    }
+    catalogos.forEach((catalogo) => {
+      createCatalogoHTML(catalogo);
+    });
   }
-  catalogos.forEach((catalogo) => {
-    createCatalogoHTML(catalogo);
-  });
 };
 // Eliminar catalogo
 const deleteCatalogo = (id) => {
@@ -184,7 +191,7 @@ const deleteCatalogo = (id) => {
 const getCatalogos = async () => {
   const response = await fetch("http://sistema.test/api/catalogo.php");
   const result = await response.json();
-  arrayCatalogos = [...result];
+  arrayCatalogos = [...result.filter(catalogo => catalogo.activo === '1')];
   showCatalogos(arrayCatalogos);
 };
 

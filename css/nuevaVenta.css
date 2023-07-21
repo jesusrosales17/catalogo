@@ -85,6 +85,7 @@
     padding: 1rem 2rem;
     color: #fff;
     font-size: 1.8rem;
+    border: none;
 }
 .sale__list {
     display: flex;

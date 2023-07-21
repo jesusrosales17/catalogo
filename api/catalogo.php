@@ -18,7 +18,8 @@ if($_SERVER['REQUEST_METHOD']  === 'POST') {
         print_r(json_encode($resp));
         http_response_code(400);
     } else {
-        $query = "INSERT INTO catalogos (nombre) VALUES ('$name')";
+        $idUser = $_SESSION['id'];
+        $query = "INSERT INTO catalogos (nombre, idUsuario) VALUES ('$name', '$idUser')";
         $result = $db->query($query);
 
         if ($result) {
@@ -39,7 +40,9 @@ if($_SERVER['REQUEST_METHOD']  === 'POST') {
     }
 }
 if($_SERVER['REQUEST_METHOD']  === 'GET') {
-    $query = "SELECT * FROM catalogos WHERE activo='1' ORDER BY idCatalogo DESC";
+    $idUser = $_SESSION['id'];
+
+    $query = "SELECT * FROM catalogos WHERE idUsuario = '$idUser' ORDER BY idCatalogo DESC";
     $response = $db->query($query);
     $data =  [];
 

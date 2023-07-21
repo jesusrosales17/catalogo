@@ -23,14 +23,16 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $id = end($segments);
 
    
+    $idUser = $_SESSION['id'];
 
     if(is_numeric($id)) {
-        $query = "SELECT idCatalogo FROM catalogos WHERE idCatalogo = '$id' AND activo='1'";
+
+        $query = "SELECT idCatalogo FROM catalogos WHERE idCatalogo = '$id'  AND activo='1' AND idUsuario = '$idUser'";
     
         $resp =  $db->query($query);
         if ($resp->num_rows) {
     
-            $query = "SELECT * FROM productos WHERE idCatalogo = '$id ' AND activo='1'";
+            $query = "SELECT * FROM productos WHERE idCatalogo = '$id ' AND activo='1' AND idUsuario = '$idUser'";
             $resp =  $db->query($query);
     
     
@@ -53,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             http_response_code(404);
         }
     } else {
-        $query = "SELECT * FROM productos";
+        $query = "SELECT * FROM productos WHERE idUsuario = '$idUser'";
         $resp =  $db->query($query);
 
 
@@ -86,18 +88,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     //checar que si haya llenado los datos obligatorios
     if (
-        !$name ||
-        !$brand ||
-        !$description ||
-        !$dateAlta ||
-        !$dateBaja ||
-        !$type ||
-        !$promocion ||
-        !$buyPrice ||
-        !$salePrice ||
-        !$amound ||
+        $name === '' ||
+        $brand === '' ||
+        $description === '' ||
+        $dateAlta === '' ||
+        $dateBaja === '' ||
+        $type === '' ||
+        $promocion === '' ||
+        $buyPrice === '' ||
+        $salePrice === '' ||
+        $amound === '' ||
         !$imagen 
     ) {
+        var_dump($brand !== '' );
         //SI no ingreso los datos obligarios mandar el mensaje correspondiente
         $respuesta = [
             "code" => 400,
@@ -125,8 +128,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
         //realizar la peticion
-        $query = "INSERT INTO productos (idCatalogo,nombre, imagen, marca, descripcion, fechaAlta, tipo, promocion, precioCompra, precioVenta, fechaBaja, cantidadProducto)
-         VALUES ('$idCatalogo', '$name', '$nombreImagen', '$brand', '$description', '$dateAlta', '$type', '$promocion', '$buyPrice', '$salePrice', '$dateBaja', '$amound')";
+        $idUser = $_SESSION['id'];
+        $query = "INSERT INTO productos (idCatalogo,nombre, imagen, marca, descripcion, fechaAlta, tipo, promocion, precioCompra, precioVenta, fechaBaja, cantidadProducto, idUsuario)
+         VALUES ('$idCatalogo', '$name', '$nombreImagen', '$brand', '$description', '$dateAlta', '$type', '$promocion', '$buyPrice', '$salePrice', '$dateBaja', '$amound', '$idUser')";
         $result = $db->query($query);
 
 

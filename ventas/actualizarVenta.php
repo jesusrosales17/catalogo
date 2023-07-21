@@ -27,15 +27,15 @@ isAuth();
 
         <header class="header container">
             <h1 class="header__title">Actualizar Venta</h1>
-            <form class="search">
-                <input type="text" class="search__input" placeholder="Busca un producto">
+            <form class="search" id="formSearch">
+                <input type="text" class="search__input" placeholder="Busca un producto..." name="search" id="search">
                 <select name="catalogo" id="selectCatalogo">
                     <option value="" selected>-- Elige un catalogo --</option>
                 </select>
             </form>
         </header>
 
-        <section class="products container" id="container">
+        <section class="products container overflow" id="container">
             <ul class="products__list" id="list">
 
             </ul>

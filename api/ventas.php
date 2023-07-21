@@ -76,8 +76,9 @@ if ($_SERVER['REQUEST_METHOD']  === 'POST') {
         if($wayToPay == 1) {
             $paymentAmount = 1;
         }
+        $idUser = $_SESSION['id'];
         
-        $query = "INSERT INTO ventas (idCliente, totalDeVenta, pedido, formaPago, cantidadPagos) VALUES ('$idClient', '$totalPedido', '$sale', '$wayToPay', '$paymentAmount')";
+        $query = "INSERT INTO ventas (idCliente, totalDeVenta, pedido, formaPago, cantidadPagos, idUsuario) VALUES ('$idClient', '$totalPedido', '$sale', '$wayToPay', '$paymentAmount', '$idUser')";
        
         $result = $db->query($query);
         
@@ -129,14 +130,15 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $id = end($segments);
 
 
+    $idUser = $_SESSION['id'];
     if(is_numeric($id)) {
         
-        $query = "SELECT idVenta FROM ventas WHERE idVenta = '$id'";
+        $query = "SELECT idVenta FROM ventas WHERE idVenta = '$id' AND idUsuario = '$idUser'";
     
         $resp =  $db->query($query);
         if ($resp->num_rows) {
     
-            $query = "SELECT * FROM ventas WHERE idVenta = '$id'";
+            $query = "SELECT * FROM ventas WHERE idVenta = '$id' AND idUsuario = '$idUser'";
             $resp =  $db->query($query);
     
     
@@ -161,7 +163,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             http_response_code(404);
         }
     } else {
-        $query = "SELECT * FROM ventas";
+        $query = "SELECT * FROM ventas WHERE idUsuario = '$idUser'";
         $response = $db->query($query);
         $data =  [];
     

@@ -14,6 +14,9 @@ const wayToPayInput = document.getElementById("wayToPay");
 const inputPaymentAmound = document.getElementById("inputPaymentAmount");
 const spanTotalPayments = document.getElementById("resumTotalPayments");
 
+const formSearch = document.getElementById('formSearch');
+
+
 let dataClientes = [];
 let dataCatalogos = [];
 let dataProductos = [];
@@ -324,23 +327,25 @@ const showCatalogos = (catalogos) => {
 };
 
 const selectProduct = (li, product) => {
-  li.classList.toggle("selected");
-  if (!li.classList.contains("selected")) {
-    product.selected = false;
-    productsSelected = productsSelected.filter(
-      (element) => element.idProducto != product.idProducto
-    );
-  } else {
-    product.selected = true;
-    productsSelected = [
-      ...productsSelected,
-      {
-        idProducto: product.idProducto,
-        idCatalogo: product.idCatalogo,
-        cantidadTotalProducto: product.cantidadProducto,
-        cantidadAVender: 1,
-      },
-    ];
+  if(product.cantidadProducto > 0) {
+    li.classList.toggle("selected");
+    if (!li.classList.contains("selected")) {
+      product.selected = false;
+      productsSelected = productsSelected.filter(
+        (element) => element.idProducto != product.idProducto
+      );
+    } else {
+      product.selected = true;
+      productsSelected = [
+        ...productsSelected,
+        {
+          idProducto: product.idProducto,
+          idCatalogo: product.idCatalogo,
+          cantidadTotalProducto: product.cantidadProducto,
+          cantidadAVender: 1,
+        },
+      ];
+    }
   }
 };
 
@@ -429,21 +434,16 @@ const showProducts = (
   products,
   msgEmpty = "No hay productos en este catalogo"
 ) => {
+  while (list.firstChild) {
+    list.removeChild(list.firstChild);
+  }
   if (products.length === 0) {
-    list.style.display = "none";
-    const p = document.createElement("p");
-    p.classList.add("productos__empty");
-    p.textContent = msgEmpty;
-    container.appendChild(p);
+    const li = document.createElement("li");
+    li.classList.add("productos__empty");
+    li.textContent = msgEmpty;
+    list.appendChild(li);
   } else {
-    if (document.querySelector(".productos__empty")) {
-      document.querySelector(".productos__empty").remove();
-    }
-    list.style.display = "flex";
-
-    while (list.firstChild) {
-      list.removeChild(list.firstChild);
-    }
+    
     products.forEach((product) => {
       createProductHtml(product);
     });
@@ -472,8 +472,8 @@ const getData = () => {
 
   Promise.all(promises)
     .then((results) => {
-      dataClientes = results[0];
-      dataCatalogos = results[1];
+      dataClientes = results[0].filter(client => client.activo === '1');
+      dataCatalogos = results[1].filter(catalogo => catalogo.activo === '1');
       dataProductos = results[2].filter(product => product.activo === '1');
 
       showCatalogos(dataCatalogos);
@@ -529,6 +529,19 @@ const onSubmit = async (e) => {
     });
   }
 };
+
+const searchProduct = (e) =>  {
+  e.preventDefault();
+
+  const formData = new FormData(formSearch);
+  const productSearch = formData.get('search');
+
+  
+  const productsFilter = dataProductos.filter(product => product.nombre.includes(productSearch));
+  console.log(productSearch);
+  showProducts(productsFilter, 'No hay productos con ese nombre');
+;}
+
 
 document.addEventListener("DOMContentLoaded", () => {
   getData();
@@ -605,3 +618,4 @@ inputPaymentAmound.addEventListener("input", (e) => {
   }
 });
 form.addEventListener("submit", onSubmit);
+formSearch.addEventListener('submit', searchProduct)

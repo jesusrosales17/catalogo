@@ -29,8 +29,8 @@ isAuth();
             <button class="header__btn" id="showModalForm">
                 <img class="header__img" src="../images/add.png" alt="Agregar catalogo">
             </button>
-            <form class="search">
-                <input type="text" class="search__input">
+            <form class="search" id="formSearch">
+                <input type="text" id="search" name="search" class="search__input" placeholder="Buscar algun producto...">
             </form>
         </header>
 

@@ -19,6 +19,9 @@
             <a href="/cumpleaños/" class="nav__a">Cumpleaños</a>
         </li>
         <li class="nav__li">
+            <a href="/cambia-contraseña.php" class="nav__a">Cambiar contraseña</a>
+        </li>
+        <li class="nav__li">
             <a href="/cerrar-sesion.php" class="nav__a">Cerrar Sesion</a>
         </li>
     </ul>

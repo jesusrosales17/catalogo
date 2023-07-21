@@ -14,6 +14,9 @@ const wayToPayInput = document.getElementById("wayToPay");
 const inputPaymentAmound = document.getElementById("inputPaymentAmount");
 const spanTotalPayments = document.getElementById("resumTotalPayments");
 
+const formSearch = document.getElementById('formSearch');
+
+
 let dataClients = [];
 let dataCatalogos = [];
 let dataProducts = [];
@@ -100,12 +103,12 @@ const moreProduct = (product) => {
         const previousQuantity = dataProductSold.cantidadAVender; // Cantidad previa de la venta
         // if (availableStock < previousQuantity) {
         //   console.log(dataProductSold.cantidadAVender)
-          // Si el stock es menor, la cantidad a vender será el stock disponible
-          availableStock += dataProductSold.cantidadAVender;
+        // Si el stock es menor, la cantidad a vender será el stock disponible
+        availableStock += dataProductSold.cantidadAVender;
         // }
       }
-      
-      console.log(availableStock)
+
+      console.log(availableStock);
 
       // Verificar si el stock es menor a la cantidad previa de la venta
       p.cantidadAVender = Math.min(p.cantidadAVender + 1, availableStock);
@@ -233,6 +236,7 @@ const createProductsSaleHTML = (product) => {
   const dataProduct = dataProducts.find(
     (p) => p.idProducto === product.idProducto
   );
+
   const li = document.createElement("LI");
   li.classList.add("sale__item");
 
@@ -309,9 +313,13 @@ const createProductsSaleHTML = (product) => {
   saleInfoContainer.appendChild(img);
   saleInfoContainer.appendChild(saleInfo);
 
-  amound.appendChild(btnReduce);
-  amound.appendChild(amoundValue);
-  amound.appendChild(btnAdd);
+  if (dataProduct.activo !== "0") {
+    amound.appendChild(btnReduce);
+    amound.appendChild(amoundValue);
+    amound.appendChild(btnAdd);
+  } else {
+    amound.appendChild(amoundValue);
+  }
 
   li.appendChild(saleInfoContainer);
   li.appendChild(amound);
@@ -356,23 +364,32 @@ const showCatalogos = (catalogos) => {
 };
 
 const selectProduct = (li, product) => {
-  li.classList.toggle("selected");
-  if (!li.classList.contains("selected")) {
-    product.selected = false;
-    productsSelected = productsSelected.filter(
-      (element) => element.idProducto != product.idProducto
-    );
-  } else {
-    product.selected = true;
-    productsSelected = [
-      ...productsSelected,
-      {
-        idProducto: product.idProducto,
-        idCatalogo: product.idCatalogo,
-        cantidadTotalProducto: product.cantidadProducto,
-        cantidadAVender: 1,
-      },
-    ];
+  if (
+    product.cantidadProducto > 0 ||
+    JSON.parse(dataVenta.pedido).find(
+      (p) => p.idProducto === product.idProducto
+    )
+  ) {
+    if (product.activo != "0") {
+      li.classList.toggle("selected");
+      if (!li.classList.contains("selected")) {
+        product.selected = false;
+        productsSelected = productsSelected.filter(
+          (element) => element.idProducto != product.idProducto
+        );
+      } else {
+        product.selected = true;
+        productsSelected = [
+          ...productsSelected,
+          {
+            idProducto: product.idProducto,
+            idCatalogo: product.idCatalogo,
+            cantidadTotalProducto: product.cantidadProducto,
+            cantidadAVender: 1,
+          },
+        ];
+      }
+    }
   }
 };
 
@@ -424,7 +441,8 @@ const showModal = (products) => {
   if (wayToPayInput > 1) {
     inputPaymentAmound.style.display = "block";
   } else {
-    spanTotalPayments.textContent =  dataVenta.cantidadPagos + " pago de $" + fullSalePrice;
+    spanTotalPayments.textContent =
+      dataVenta.cantidadPagos + " pago de $" + fullSalePrice;
     inputPaymentAmound.style.display = "none";
   }
 
@@ -504,21 +522,15 @@ const showProducts = (
   products,
   msgEmpty = "No hay productos en este catalogo"
 ) => {
+  while (list.firstChild) {
+    list.removeChild(list.firstChild);
+  }
   if (products.length === 0) {
-    list.style.display = "none";
-    const p = document.createElement("p");
-    p.classList.add("productos__empty");
-    p.textContent = msgEmpty;
-    container.appendChild(p);
+    const li = document.createElement("li");
+    li.classList.add("productos__empty");
+    li.textContent = msgEmpty;
+    list.appendChild(li);
   } else {
-    if (document.querySelector(".productos__empty")) {
-      document.querySelector(".productos__empty").remove();
-    }
-    list.style.display = "flex";
-
-    while (list.firstChild) {
-      list.removeChild(list.firstChild);
-    }
     products.forEach((product) => {
       createProductHtml(product);
     });
@@ -549,8 +561,8 @@ const getData = (id) => {
 
   Promise.all(promises)
     .then((results) => {
-      dataClients = results[0];
-      dataCatalogos = results[1];
+      dataClients = results[0].filter((client) => client.activo === "1");
+      dataCatalogos = results[1].filter((catalogo) => catalogo.activo === "1");
       dataProducts = results[2];
       dataVenta = results[3].data[0];
 
@@ -560,6 +572,17 @@ const getData = (id) => {
 
       // showProducts(dataProducts, 'No hay productos que mostrar')
       productsSelected = JSON.parse(dataVenta.pedido);
+      //filtrar todos los productos para solo tener los que estan activos, y los que no estan activos pero estan en la venta
+
+      dataProducts = dataProducts.filter((product) => {
+        return (
+          product.activo === "1" ||
+          productsSelected.find(
+            (productSelected) =>
+              productSelected.idProducto === product.idProducto
+          )
+        );
+      });
 
       showProducts(
         dataProducts.filter(
@@ -609,7 +632,6 @@ const onSubmit = async (e) => {
   });
   console.log(productsSelected);
   const result = await response.json();
-  
 
   if (result.code === 200) {
     Swal.fire({
@@ -629,18 +651,32 @@ const onSubmit = async (e) => {
   }
 };
 
+const searchProduct = (e) =>  {
+  e.preventDefault();
+
+  const formData = new FormData(formSearch);
+  const productSearch = formData.get('search');
+
+  
+  const productsFilter = dataProducts.filter(product => product.nombre.includes(productSearch));
+  console.log(productSearch);
+  showProducts(productsFilter, 'No hay productos con ese nombre');
+;}
+
 document.addEventListener("DOMContentLoaded", () => {
   idSale = new URLSearchParams(window.location.search).get("id");
 
   getData(idSale);
 });
-selectCatalogo.addEventListener("change", () =>
+selectCatalogo.addEventListener("change", () => {
+  console.log(dataProducts);
   showProducts(
     dataProducts.filter(
-      (product) => product.idCatalogo === selectCatalogo.value
+      (product) =>
+        product.idCatalogo === selectCatalogo.value && product.activo === "1"
     )
-  )
-);
+  );
+});
 
 btnShowModalForm.addEventListener("click", () => {
   if (productsSelected.length > 0) {
@@ -680,8 +716,7 @@ wayToPayInput.addEventListener("change", (e) => {
 
   if (e.target.value > 1) {
     document.getElementById("inputPaymentAmount").style.display = "block";
-    inputPaymentAmound.querySelector('input').value='';
-
+    inputPaymentAmound.querySelector("input").value = "";
   } else {
     spanTotalPayments.textContent =
       totalPayments + " pago de $" + fullSalePrice;
@@ -701,3 +736,4 @@ inputPaymentAmound.addEventListener("input", (e) => {
   }
 });
 form.addEventListener("submit", onSubmit);
+formSearch.addEventListener('submit', searchProduct)

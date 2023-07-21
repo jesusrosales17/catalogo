@@ -224,3 +224,13 @@ textarea {
     outline: none;
     background-color: transparent;
 }
+tr {
+    position: relative;
+    z-index: 20;
+}
+.modal {
+    z-index: 30;
+}
+li {
+   z-index: 20; 
+}

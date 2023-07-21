@@ -1,0 +1,17 @@
+.updatePassword .form {
+    box-shadow: none;
+    margin-top: 6rem;
+    border: 1px solid #000;
+    border-radius: 1rem;
+}
+.alert {
+    background-color: rgba(255, 0, 0, 0.221);
+    padding: 1rem;
+    border-left: 4px solid #f00;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.alert__text {
+    font-size: 1.6rem;
+    font-weight: 500;
+}

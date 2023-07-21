@@ -9,6 +9,7 @@
     width: 3.2rem;
     height: 3.2rem;
     text-decoration: none;
+    border: none;
 }
 .header {
     margin-top: 2rem;

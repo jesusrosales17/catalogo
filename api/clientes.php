@@ -21,7 +21,8 @@ if($_SERVER['REQUEST_METHOD']  === 'POST') {
         print_r(json_encode($resp));
         http_response_code(400);
     } else {
-        $query = "INSERT INTO clientes (nombreCompleto, telefono, fechaNacimiento) VALUES ('$name', '$numberPhone', '$birthdate')";
+        $idUser = $_SESSION['id'];
+        $query = "INSERT INTO clientes (nombreCompleto, telefono, fechaNacimiento, idUsuario) VALUES ('$name', '$numberPhone', '$birthdate', '$idUser')";
         $result = $db->query($query);
 
         if ($result) {
@@ -42,7 +43,9 @@ if($_SERVER['REQUEST_METHOD']  === 'POST') {
     }
 }
 if($_SERVER['REQUEST_METHOD']  === 'GET') {
-    $query = "SELECT * FROM clientes WHERE activo='1' ORDER BY idCliente DESC";
+    $idUser = $_SESSION['id'];
+
+    $query = "SELECT * FROM clientes WHERE  idUsuario = '$idUser' ORDER BY idCliente DESC";
     $response = $db->query($query);
     $data =  [];
 

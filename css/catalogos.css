@@ -126,3 +126,7 @@
     outline: none;
     background-color: transparent;
 }
+.catalogos__empty {
+    text-align: center;
+    font-size: 2.2rem;
+}

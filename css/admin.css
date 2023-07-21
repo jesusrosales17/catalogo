@@ -1,0 +1,69 @@
+.admin__title {
+    font-size: 2.7rem;
+    text-align: center;
+    margin: 3rem;
+}
+.admin__divButton {
+    display: flex;
+    justify-content: flex-end;
+}
+.admin__button {
+    padding: .5rem 1.7rem;
+    background-color: var(--cta);
+    color: #fff;
+    border: none;
+    outline: none;
+    font-size: 1.6rem;
+}
+.admin {
+    padding: 2rem;
+}
+nav a {
+    display: block;
+    text-align: end;
+    font-size: 1.5rem;
+    color: #1c1c1c;
+    text-decoration: none;
+}
+.users__table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 3rem;
+}
+.users__table thead {
+    background-color: #1c1c1c;
+}
+.users__table tr {
+    border-bottom: 1px solid #000;
+}
+.users__table th {
+    color: #fff;
+    font-size: 1.7rem;
+    padding: .5rem;
+    text-align: center;
+}
+.users__table td {
+    font-size: 1.5rem;
+    padding: .5rem;
+    text-align: center;
+}
+.users__empty {
+ font-size: 2rem;
+ text-align: center;
+ color: #1c1c1c;
+ margin-top: 4rem;
+}
+.users__table img {
+    width: 2.2rem;
+    height: 2.2rem;
+}
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background-color: #00000025;
+}

@@ -69,7 +69,7 @@ isAuth();
                             <button type="button" class="modal__btn" id="btnShowModalPay">Registrar pago</button>
                         </div>
 
-                        <div class="modal__divButtonHistory">
+                        <div class="modal__divButtonHistory" id="divButtonHistory">
                             <button type="button" class="modal__btn modal__btn--history" id="btnShowModalHistory">Historial de pagos</button>
                         </div>
                     </div>
@@ -90,7 +90,7 @@ isAuth();
                     <input type="number" step="0.01" name="amount" id="inputAmountPay" placeholder="Cantidad a pagar" class="form__input" min='0' required>
                 </div>
 
-                <input type="submit" value="Registrar pago" class="form__submit">
+                <input type="submit" value="Registrar pago" class="form__submit" >
         </div>
         </div>
 
@@ -101,15 +101,8 @@ isAuth();
                 </div>
                 <h2 class="modal__title">Historial de pagos</h2>
 
-                <ul class="history__list">
-                    <li class="history__item">
-                        <p>Fecha del pago: <span>22/43/22</span></p>
-                        <p>Cantidad: <span>$200.00</span></p>
-                        <div class="history__buttons">
-                            <img src="../images/edit.png" alt="editar el pago">
-                            <img src="../images/delete.png" alt="eliminar el pago">
-                        </div>
-                    </li>
+                <ul class="history__list" id="listHistory">
+                    
                 </ul>
             </div>
         </div>
