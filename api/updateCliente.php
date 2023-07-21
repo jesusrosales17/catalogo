@@ -12,7 +12,7 @@ if($_SERVER['REQUEST_METHOD']  === 'POST') {
     $id = trim($db->escape_string($_POST['id']));
 
 
-    if(!$id || !$birthdate || !$numberPhone) {
+    if($id === '' || $birthdate === '' || $numberPhone === '') {
         $resp = [
             'code'=> 400,
             'msg' => 'Todos los datos son obligatorios'
@@ -20,7 +20,7 @@ if($_SERVER['REQUEST_METHOD']  === 'POST') {
         print_r(json_encode($resp));
         http_response_code(400);
     } else {
-        if(!$name) {
+        if($name === '') {
             $resp = [
                 'code'=> 400,
                 'msg' => 'Todos los datos son obligatorios'
@@ -44,7 +44,7 @@ if($_SERVER['REQUEST_METHOD']  === 'POST') {
                     "msg" => "No se pudo actualizar el cliente vuelva a intentarlo",
                   ];
                   print_r(json_encode($resp));
-                  http_response_code(200);
+                  http_response_code(400);
               }
         }
     }

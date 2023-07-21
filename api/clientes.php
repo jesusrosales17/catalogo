@@ -13,7 +13,7 @@ if($_SERVER['REQUEST_METHOD']  === 'POST') {
     $numberPhone = trim($db->escape_string($_POST['numberPhone']));
 
 
-    if(!$name || !$birthdate || !$numberPhone) {
+    if($name === '' || $birthdate === '' || $numberPhone === '') {
         $resp = [
             'code'=> 400,
             'msg' => 'Todos los datos son obligatorios'

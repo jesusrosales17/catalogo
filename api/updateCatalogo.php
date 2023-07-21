@@ -18,7 +18,7 @@ if($_SERVER['REQUEST_METHOD']  === 'POST') {
         print_r(json_encode($resp));
         http_response_code(400);
     } else {
-        if(!$name) {
+        if($name === '') {
             $resp = [
                 'code'=> 400,
                 'msg' => 'El nombre del catalogo es un dato obligatorio'
@@ -42,7 +42,7 @@ if($_SERVER['REQUEST_METHOD']  === 'POST') {
                     "msg" => "No se pudo actualizar el catalogo vuelva a intentarlo",
                   ];
                   print_r(json_encode($resp));
-                  http_response_code(200);
+                  http_response_code(400);
               }
         }
     }

@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD']  === 'POST') {
                     "msg" => "No se pudo agregar el usuario vuelva a intentarlo",
                 ];
                 print_r(json_encode($resp));
-                http_response_code(200);
+                http_response_code(400);
             }
         } else {
             $resp = [
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD']  === 'POST') {
                 "msg" => "No tienes los permisos para agregar usuarios",
             ];
             print_r(json_encode($resp));
-            http_response_code(200);
+            http_response_code(400);
         }
     }
 }

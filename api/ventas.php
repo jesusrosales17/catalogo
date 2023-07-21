@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD']  === 'POST') {
     $sale = $_POST['pedido'];
 
 
-    if (!$idClient || !$wayToPay || !$sale) {
+    if (!$idClient || $wayToPay === '' || $sale === '') {
 
         $resp = [
             'code' => 400,
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD']  === 'POST') {
         http_response_code(400);
     } else {
         if ($wayToPay > 1) {
-            if (!$paymentAmount) {
+            if ($paymentAmount === '') {
                 $resp = [
                     'code' => 400,
                     'msg' => 'Todos los datos son obligatorios'

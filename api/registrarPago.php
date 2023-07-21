@@ -12,7 +12,7 @@ if($_SERVER['REQUEST_METHOD']  === 'POST') {
     $amount = trim($db->escape_string($_POST['amount']));
 
 
-   if(!$idSale) {
+   if($idSale === '') {
     $resp = [
         'code'=> 400,
         'msg' => 'Ocurrio un error vuelve a intentarlo mas tarde'
@@ -20,7 +20,7 @@ if($_SERVER['REQUEST_METHOD']  === 'POST') {
     print_r(json_encode($resp));
     http_response_code(400);
    } else {
-    if(!$amount) {
+    if($amount === '') {
         $resp = [
             'code'=> 400,
             'msg' => 'Todos los datos son obligatorios'
@@ -107,7 +107,7 @@ if($_SERVER['REQUEST_METHOD']  === 'POST') {
                 "msg" => "No se pudo registrar el pago vuelva a intentarlo mas tarde",
               ];
               print_r(json_encode($resp));
-              http_response_code(200);
+              http_response_code(400);
           }
     }
    }

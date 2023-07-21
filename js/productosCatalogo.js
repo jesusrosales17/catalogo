@@ -80,8 +80,11 @@ const showProducts = (
   products,
   msgEmpty = "No hay productos en este catalogo"
 ) => {
+  console.log(products)
+
   const errorsAlerts = document.querySelectorAll(".productos__empty");
   errorsAlerts.forEach((error) => error.remove());
+
   if (products.length === 0) {
     table.style.display = "none";
     const p = document.createElement("p");
@@ -89,6 +92,7 @@ const showProducts = (
     p.textContent = msgEmpty;
     container.appendChild(p);
   } else {
+    table.style.display = "table";
     while (tableBody.firstChild) {
         tableBody.removeChild(tableBody.firstChild);
     }
@@ -312,7 +316,8 @@ const searchProduct = (e) =>  {
   e.preventDefault();
 
   const formData = new FormData(formSearch);
-  const productSearch = formData.get('search');
+  const productSearch = formData.get('search').trim();
+
 
   const productsFilter = ArrayProducts.filter(product => product.nombre.includes(productSearch));
   showProducts(productsFilter, 'No hay productos con ese nombre');

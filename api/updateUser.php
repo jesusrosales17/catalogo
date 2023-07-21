@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD']  === 'POST') {
                         "msg" => "No se pudo actualizar el usuario vuelva a intentarlo",
                     ];
                     print_r(json_encode($resp));
-                    http_response_code(200);
+                    http_response_code(400);
                 }
             } else {
                 $resp = [

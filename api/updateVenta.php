@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD']  === 'POST') {
         print_r(json_encode($resp));
         http_response_code(400);
     } else {
-        if (!$idClient || !$wayToPay || !$sale) {
+        if ($idClient === '' || $wayToPay === '' || $sale === '') {
 
             $resp = [
                 'code' => 400,
@@ -178,7 +178,7 @@ if ($_SERVER['REQUEST_METHOD']  === 'POST') {
                     "msg" => "No se pudo actualizar la venta, vuelva a intentarlo",
                 ];
                 print_r(json_encode($resp));
-                http_response_code(200);
+                http_response_code(400);
             }
         }
     }

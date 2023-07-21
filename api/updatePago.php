@@ -21,7 +21,7 @@ if($_SERVER['REQUEST_METHOD']  === 'POST') {
     print_r(json_encode($resp));
     http_response_code(400);
    } else {
-    if(!$amount) {
+    if($amount === '') {
         $resp = [
             'code'=> 400,
             'msg' => 'Todos los datos son obligatorios'

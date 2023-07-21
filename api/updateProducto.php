@@ -19,15 +19,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $imagen = $_FILES["image"];
 
     if (
-        !$name ||
-        !$brand ||
-        !$description ||
-        !$dateAlta ||
-        !$dateBaja ||
-        !$type ||
-        !$promocion ||
-        !$buyPrice ||
-        !$salePrice ||
+        $name === '' ||
+        $brand === '' ||
+        $description === '' ||
+        $dateAlta === '' ||
+        $dateBaja === '' ||
+        $type === '' ||
+        $promocion === '' ||
+        $buyPrice === '' ||
+        $salePrice === '' ||
         !$imagen
     ) {
         $respuesta = [

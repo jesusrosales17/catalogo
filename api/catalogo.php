@@ -10,7 +10,7 @@ $db = connectDB();
 if($_SERVER['REQUEST_METHOD']  === 'POST') {
     $name = trim($db->escape_string($_POST['name']));
 
-    if(!$name) {
+    if($name === '') {
         $resp = [
             'code'=> 400,
             'msg' => 'El nombre del catalogo es un dato obligatorio'
