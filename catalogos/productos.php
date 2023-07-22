@@ -84,7 +84,7 @@ isAuth();
 
                 <div class="form__item">
                     <label for="dateBaja" class="form__label">Fecha de baja:</label>
-                    <input type="date" name="dateBaja" id="dateBaja" class="form__input">
+                    <input type="date" name="dateBaja" id="dateBaja" class="form__input" data-opcional = 'true'>
                 </div>
 
                 <div class="form__item">

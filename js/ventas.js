@@ -13,6 +13,7 @@ const modalHistory = document.getElementById("modalHistory");
 const btnCloseModalHistory = document.getElementById("btnCloseModalHistory");
 const btnShowModalHistory = document.getElementById("btnShowModalHistory");
 const listHistory = document.getElementById("listHistory");
+const btnExportExel = document.getElementById("btnExportExel");
 
 let dataSales = [];
 let dataProducts = [];
@@ -258,14 +259,14 @@ const createPaymentsHTML = (payment, sale) => {
   li.appendChild(year);
   li.appendChild(amount);
 
-  if(dataClients.find(client => client.idCliente === sale.idCliente).activo !== '0') {
+  if (
+    dataClients.find((client) => client.idCliente === sale.idCliente).activo !==
+    "0"
+  ) {
     containerButtons.appendChild(edit);
     containerButtons.appendChild(remove);
     li.appendChild(containerButtons);
   }
-
-
- 
 
   listHistory.appendChild(li);
 };
@@ -288,7 +289,10 @@ const closeModalHistory = () => {
 // muestra el modal del historial de pagos
 const showModalHistory = (sale) => {
   modalHistory.style.display = "block";
-  showPayments(dataPagos.filter((p) => p.idVenta === sale.idVenta), sale);
+  showPayments(
+    dataPagos.filter((p) => p.idVenta === sale.idVenta),
+    sale
+  );
   isUpdatingPayment = true;
 };
 // muestra los productos vendidos
@@ -308,13 +312,17 @@ const showModal = (products, sale) => {
   btnShowModalPay.addEventListener("click", () => showModalPay(sale));
   btnShowModalHistory.addEventListener("click", () => showModalHistory(sale));
 
-  if(dataClients.find(client => client.idCliente === sale.idCliente).activo === '0') {
-    document.getElementById("divButtonPay").style.display =  "none";
-    
+  if (
+    dataClients.find((client) => client.idCliente === sale.idCliente).activo ===
+    "0"
+  ) {
+    document.getElementById("divButtonPay").style.display = "none";
   } else {
-    document.getElementById("divButtonPay").style.display =  Number(sale.totalDeVenta) > Number(sale.cantidadPagada) ? "flex" : "none";
+    document.getElementById("divButtonPay").style.display =
+      Number(sale.totalDeVenta) > Number(sale.cantidadPagada) ? "flex" : "none";
   }
-  document.getElementById("divButtonHistory").style.display =  sale.pagosRealizados === "0" ? "none" : "block";
+  document.getElementById("divButtonHistory").style.display =
+    sale.pagosRealizados === "0" ? "none" : "block";
   let productsFilter = [];
 
   let amount = 0;
@@ -523,6 +531,63 @@ const getData = () => {
       console.error("Error al obtener datos:", error);
     });
 };
+
+function exportToExcel() {
+  const todaySales = dataSales.filter((sale) => {
+    let date = sale.fechaVenta.split(" ")[0];
+    date = date.split("-").join('/');
+
+    if (
+      new Date(date).toLocaleDateString() ===
+      new Date().toLocaleDateString()
+    ) {
+      return sale;
+    } 
+  });
+
+  const todaySalesArray = todaySales.map(sale => {
+    const nameClient = dataClients.find(client => client.idCliente === sale.idCliente).nombreCompleto;
+    console.log(sale)
+    return [sale.fechaVenta, nameClient, sale.totalDeVenta]
+  })
+
+ 
+
+ 
+
+  const data = [
+    ["Reporte del: ", new Date().toLocaleDateString()],
+    ["Fecha", "Nombre del cliente", "Cantidad total de la venta"],
+    ...todaySalesArray
+  ];
+
+  const ws = XLSX.utils.aoa_to_sheet(data);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Ventas del dia");
+
+  // Crear un Blob con el contenido del archivo Excel
+  const wbout = XLSX.write(wb, {
+    bookType: "xlsx",
+    type: "array",
+  });
+  const blob = new Blob([wbout], {
+    type: "application/octet-stream",
+  });
+
+  // Crear un enlace de descarga y simular el clic para descargar el archivo
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "Ventas del dia.xlsx";
+  document.body.appendChild(a);
+  a.click();
+
+  // Limpiar recursos después de la descarga
+  window.URL.revokeObjectURL(url);
+  document.body.removeChild(a);
+}
+
+btnExportExel.addEventListener("click", exportToExcel);
 
 document.addEventListener("DOMContentLoaded", async () => {
   getData();

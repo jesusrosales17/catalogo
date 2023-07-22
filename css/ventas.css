@@ -232,3 +232,17 @@
     width: 2.3rem;
     height: 2.3rem;
 }
+.btn__exel {
+    padding: .7rem 3rem;
+    color: #fff;
+    background-color: var(--headings);
+    /* position: fixed; */
+    /* bottom: 1.5rem; */
+    /* right: 4rem; */
+}
+.header__actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}

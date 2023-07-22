@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Crear Archivo PDF con JavaScript</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    h1 {
+      color: #007BFF;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th,
+    td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
+</head>
+
+<body>
+  <button onclick="generatePDF()">Generar PDF</button>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+  <script>
+    function generatePDF() {
+      // Datos que se insertarán en el archivo PDF
+      const data = [
+        { Nombre: 'Juan', Edad: 25, Correo: 'juan@example.com' },
+        { Nombre: 'María', Edad: 30, Correo: 'maria@example.com' },
+        { Nombre: 'Pedro', Edad: 22, Correo: 'pedro@example.com' },
+      ];
+
+      // Crear un nuevo elemento div para el contenido que deseas convertir a PDF
+      const content = document.createElement('div');
+
+      // Título del documento
+      const title = document.createElement('h1');
+      title.textContent = 'Datos de Usuarios';
+      content.appendChild(title);
+
+      // Tabla con los datos
+      const table = document.createElement('table');
+      const headerRow = document.createElement('tr');
+      ['Nombre', 'Edad', 'Correo'].forEach(columnName => {
+        const th = document.createElement('th');
+        th.textContent = columnName;
+        headerRow.appendChild(th);
+      });
+      table.appendChild(headerRow);
+
+      data.forEach(item => {
+        const row = document.createElement('tr');
+        ['Nombre', 'Edad', 'Correo'].forEach(columnName => {
+          const td = document.createElement('td');
+          td.textContent = item[columnName];
+          row.appendChild(td);
+        });
+        table.appendChild(row);
+      });
+
+      content.appendChild(table);
+
+      // Opciones para la generación del PDF
+      const options = {
+        margin: 10,
+        filename: 'ejemplo.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      // Generar el archivo PDF
+      html2pdf().from(content).set(options).save();
+    }
+  </script>
+</body>
+
+</html>

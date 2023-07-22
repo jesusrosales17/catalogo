@@ -35,7 +35,7 @@ const showModalProduct = (product) => {
     modalProduct.querySelector("#imgProducto").src = '../images/products/' + product.imagen;
     modalProduct.querySelector("#imgProducto").alt = 'Imagen del producto ' + product.nombre;
     modalProduct.querySelectorAll("span").forEach((span) => {
-        span.textContent = product[span.dataset.attribute];
+        span.textContent = product[span.dataset.attribute] || 'No asignado';
     });
     btnEdit.addEventListener('click', () => {
         closeModalProduct();
@@ -215,7 +215,7 @@ const validateForm = (form) => {
 
   form.querySelectorAll("input").forEach((input) => {
     if (input.type !== "submit") {
-      if (input.value.trim() === "") {
+      if (input.value.trim() === "" && !input.dataset.opcional ) {
         console.log(input)
         if(input.type === 'file' && !isUpdating || input.type !== 'file') {
             resp = {
@@ -224,7 +224,6 @@ const validateForm = (form) => {
             };
             return resp;
         } 
-
       }
 
       if (input.type === "number") {

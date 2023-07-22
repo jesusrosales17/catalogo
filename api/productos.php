@@ -92,7 +92,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $brand === '' ||
         $description === '' ||
         $dateAlta === '' ||
-        $dateBaja === '' ||
         $type === '' ||
         $promocion === '' ||
         $buyPrice === '' ||
@@ -129,8 +128,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         //realizar la peticion
         $idUser = $_SESSION['id'];
+        $query = '';
+        if($dateBaja === '') {
+            $query = "INSERT INTO productos (idCatalogo,nombre, imagen, marca, descripcion, fechaAlta, tipo, promocion, precioCompra, precioVenta, cantidadProducto, idUsuario)
+            VALUES ('$idCatalogo', '$name', '$nombreImagen', '$brand', '$description', '$dateAlta', '$type', '$promocion', '$buyPrice', '$salePrice', '$amound', '$idUser')";
+        } else {
         $query = "INSERT INTO productos (idCatalogo,nombre, imagen, marca, descripcion, fechaAlta, tipo, promocion, precioCompra, precioVenta, fechaBaja, cantidadProducto, idUsuario)
          VALUES ('$idCatalogo', '$name', '$nombreImagen', '$brand', '$description', '$dateAlta', '$type', '$promocion', '$buyPrice', '$salePrice', '$dateBaja', '$amound', '$idUser')";
+        }
+
+        
         $result = $db->query($query);
 
 

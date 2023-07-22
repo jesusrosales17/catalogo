@@ -15,6 +15,8 @@ isAuth();
     <link rel="stylesheet" href="../css/global.css">
     <link rel="stylesheet" href="../css/ventas.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- use version 0.20.0 -->
+    <script lang="javascript" src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
 </head>
 
 <body>
@@ -27,9 +29,13 @@ isAuth();
 
         <div class="header container">
             <h1 class="header__title">Ventas</h1>
-            <a href="./nuevaVenta.php" class="header__btn">
-                <img class="header__img" src="../images/add.png" alt="Agregar catalogo">
-            </a>
+            <div class="header__actions">
+                <button id="btnExportExel" type="button" class="btn__exel">Exportar ventas del dia</button>
+
+                <a href="./nuevaVenta.php" class="header__btn">
+                    <img class="header__img" src="../images/add.png" alt="Agregar catalogo">
+                </a>
+            </div>
         </div>
         <select class="select" name='client' id="client">
             <option value="" selected>-- Elige un cliente --</option>
@@ -90,11 +96,11 @@ isAuth();
                     <input type="number" step="0.01" name="amount" id="inputAmountPay" placeholder="Cantidad a pagar" class="form__input" min='0' required>
                 </div>
 
-                <input type="submit" value="Registrar pago" class="form__submit" >
+                <input type="submit" value="Registrar pago" class="form__submit">
         </div>
         </div>
 
-        <div class="modal modal-history"  id="modalHistory" style="display: none;">
+        <div class="modal modal-history" id="modalHistory" style="display: none;">
             <div class="modal__container">
                 <div class="modal__exitDiv">
                     <button type="button" class="modal__exit" id="btnCloseModalHistory">x</button>
@@ -102,15 +108,15 @@ isAuth();
                 <h2 class="modal__title">Historial de pagos</h2>
 
                 <ul class="history__list" id="listHistory">
-                    
+
                 </ul>
             </div>
         </div>
     </main>
 
 
-    <script src="../js/ventas.js"></script>
 
+    <script src="../js/ventas.js"></script>
 </body>
 
 </html>

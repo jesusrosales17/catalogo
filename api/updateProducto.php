@@ -23,7 +23,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $brand === '' ||
         $description === '' ||
         $dateAlta === '' ||
-        $dateBaja === '' ||
         $type === '' ||
         $promocion === '' ||
         $buyPrice === '' ||
@@ -61,8 +60,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
 
-
-        $query = "UPDATE  `productos` SET nombre = '$name', imagen = '$nombreImagen', marca = '$brand', descripcion = '$description', fechaAlta = '$dateAlta' , tipo = '$type', promocion = '$promocion', precioCompra = '$buyPrice', precioVenta = '$salePrice', fechaBaja = '$dateBaja', cantidadProducto = '$amound' WHERE idProducto = '$idProdcuto' ";
+        if($dateBaja === '') {
+            $query = "UPDATE  `productos` SET nombre = '$name', imagen = '$nombreImagen', marca = '$brand', descripcion = '$description', fechaAlta = '$dateAlta' , tipo = '$type', promocion = '$promocion', precioCompra = '$buyPrice', precioVenta = '$salePrice',  cantidadProducto = '$amound' WHERE idProducto = '$idProdcuto' ";
+        } else {
+            $query = "UPDATE  `productos` SET nombre = '$name', imagen = '$nombreImagen', marca = '$brand', descripcion = '$description', fechaAlta = '$dateAlta' , tipo = '$type', promocion = '$promocion', precioCompra = '$buyPrice', precioVenta = '$salePrice', fechaBaja = '$dateBaja', cantidadProducto = '$amound' WHERE idProducto = '$idProdcuto' ";
+        }
 
         $result = $db->query($query);
 
