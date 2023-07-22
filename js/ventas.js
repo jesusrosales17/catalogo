@@ -13,7 +13,7 @@ const modalHistory = document.getElementById("modalHistory");
 const btnCloseModalHistory = document.getElementById("btnCloseModalHistory");
 const btnShowModalHistory = document.getElementById("btnShowModalHistory");
 const listHistory = document.getElementById("listHistory");
-const btnExportExel = document.getElementById("btnExportExel");
+const btnExportSales = document.getElementById("btnExportSales");
 
 let dataSales = [];
 let dataProducts = [];
@@ -532,6 +532,88 @@ const getData = () => {
     });
 };
 
+function generatePDF() {
+  // Datos que se insertarán en el archivo PDF
+  const todaySales = dataSales.filter((sale) => {
+    let date = sale.fechaVenta.split(" ")[0];
+    date = date.split("-").join('/');
+
+    if (
+      new Date(date).toLocaleDateString() ===
+      new Date().toLocaleDateString()
+    ) {
+      return sale;
+    } 
+  });
+
+  const todaySalesArray = todaySales.map(sale => {
+    const nameClient = dataClients.find(client => client.idCliente === sale.idCliente).nombreCompleto;
+    console.log(sale)
+    return [sale.fechaVenta, nameClient, sale.totalDeVenta]
+  })
+
+  // Crear un nuevo elemento div para el contenido que deseas convertir a PDF
+  const content = document.createElement('div');
+
+  // Título del documento
+  const title = document.createElement('h1');
+  title.textContent = "Reporte del: " + new Date().toLocaleDateString();
+  title.classList.add('title-pdf');
+  content.appendChild(title);
+
+  // Tabla con los datos
+  const table = document.createElement('table');
+  table.classList.add('table-pdf');
+
+  const headerRow = document.createElement('tr');
+  ["Fecha y hora", "Nombre del cliente", "Cantidad total de la venta"].forEach(columnName => {
+    const th = document.createElement('th');
+    th.textContent = columnName;
+    headerRow.appendChild(th);
+  });
+  table.appendChild(headerRow);
+
+  todaySalesArray.forEach(sale => {
+    const row = document.createElement('tr');
+    const td1 = document.createElement('td');
+    const td2 = document.createElement('td');
+    const td3 = document.createElement('td');
+
+    td1.textContent = sale[0];
+    td2.textContent = sale[1];
+    td3.textContent = '$' + sale[2];
+
+    row.appendChild(td1);
+    row.appendChild(td2);
+    row.appendChild(td3);
+    
+    table.appendChild(row);
+  });
+
+  const empty = document.createElement('p');
+  empty.classList.add('empty-pdf')
+  empty.textContent = 'No hay ventas registradas';
+
+  if(todaySalesArray.length === 0) {
+    content.appendChild(empty);
+  } else {
+    content.appendChild(table);
+  }
+
+
+  // Opciones para la generación del PDF
+  const options = {
+    margin: 10,
+    filename: 'ventas del dia.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+
+  // Generar el archivo PDF
+  html2pdf().from(content).set(options).save();
+}
+
 function exportToExcel() {
   const todaySales = dataSales.filter((sale) => {
     let date = sale.fechaVenta.split(" ")[0];
@@ -587,7 +669,7 @@ function exportToExcel() {
   document.body.removeChild(a);
 }
 
-btnExportExel.addEventListener("click", exportToExcel);
+btnExportSales.addEventListener("click", generatePDF);
 
 document.addEventListener("DOMContentLoaded", async () => {
   getData();

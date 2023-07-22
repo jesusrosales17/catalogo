@@ -16,7 +16,9 @@ isAuth();
     <link rel="stylesheet" href="../css/ventas.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- use version 0.20.0 -->
-    <script lang="javascript" src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+    <!-- <script lang="javascript" src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+
 </head>
 
 <body>
@@ -30,7 +32,7 @@ isAuth();
         <div class="header container">
             <h1 class="header__title">Ventas</h1>
             <div class="header__actions">
-                <button id="btnExportExel" type="button" class="btn__exel">Exportar ventas del dia</button>
+                <button id="btnExportSales" type="button" class="btn__exel">Exportar ventas del dia</button>
 
                 <a href="./nuevaVenta.php" class="header__btn">
                     <img class="header__img" src="../images/add.png" alt="Agregar catalogo">
