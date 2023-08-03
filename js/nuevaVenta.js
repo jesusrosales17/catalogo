@@ -114,6 +114,9 @@ const moreProduct = (product) => {
       text = "Pagos semanales";
       break;
     case "4":
+      text = "Pagos quincenales";
+      break;
+      case "5":
       text = "Pagos mensuales";
       break;
     default:
@@ -176,8 +179,11 @@ const reduceProduct = (product) => {
       text = "Pagos semanales";
       break;
     case "4":
-      text = "Pagos mensuales";
+      text = "Pagos quincenales";
       break;
+      case "5":
+        text = "Pagos mensuales";
+        break;
     default:
       text = "No seleccionada";
       break;
@@ -586,8 +592,11 @@ wayToPayInput.addEventListener("change", (e) => {
       text = "Pagos semanales";
       break;
     case "4":
-      text = "Pagos mensuales";
+      text = "Pagos quincenales";
       break;
+      case "5":
+        text = "Pagos mensuales";
+        break;
     default:
       text = "No seleccionada";
       break;

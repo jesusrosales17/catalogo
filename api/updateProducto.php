@@ -1,6 +1,9 @@
 <?php
-require("../config/db.php");
+require_once('../config/db.php');
+require_once('../functions/isAuth.php');
+isAuth();
 $db = connectDB();
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -9,7 +12,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $brand = trim($db->escape_string($_POST["brand"]));
     $description = trim($db->escape_string($_POST["description"]));
     $dateAlta = trim($db->escape_string($_POST["dateAlta"]));
-    $dateBaja = trim($db->escape_string($_POST["dateBaja"]));
     $type = trim($db->escape_string($_POST["type"]));
     $promocion = trim($db->escape_string($_POST["promocion"]));
     $buyPrice = trim($db->escape_string($_POST["buyPrice"]));
@@ -36,6 +38,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         print_r(json_encode($respuesta));
         http_response_code(400);
     } else {
+        $idUser = $_SESSION['id'];
+        $query = "SELECT idCatalogo FROM productos WHERE idProducto = '$idProdcuto'";
+        $resp = $db->query($query);
+        $idCatalogo = $resp-> fetch_assoc()['idCatalogo'];
+        $query = 'SELECT nombre FROM productos WHERE nombre = "' . $name . '" AND idUsuario = "' . $idUser . '" AND idCatalogo = "' . $idCatalogo .'" AND activo = 1';
+       
+        $response = $db->query($query);
+        if ($response->num_rows > 0) {
+            $resp = [
+                'code' => 400,
+                'msg' => 'Ya existe un producto con el mismo nombre en este catalogo'
+            ];
+            print_r(json_encode($resp));
+            http_response_code(400);
+            return;
+        }
         $carpetaImagenes = "../images/products";
 
 
@@ -60,11 +78,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
 
-        if($dateBaja === '') {
+  
             $query = "UPDATE  `productos` SET nombre = '$name', imagen = '$nombreImagen', marca = '$brand', descripcion = '$description', fechaAlta = '$dateAlta' , tipo = '$type', promocion = '$promocion', precioCompra = '$buyPrice', precioVenta = '$salePrice',  cantidadProducto = '$amound' WHERE idProducto = '$idProdcuto' ";
-        } else {
-            $query = "UPDATE  `productos` SET nombre = '$name', imagen = '$nombreImagen', marca = '$brand', descripcion = '$description', fechaAlta = '$dateAlta' , tipo = '$type', promocion = '$promocion', precioCompra = '$buyPrice', precioVenta = '$salePrice', fechaBaja = '$dateBaja', cantidadProducto = '$amound' WHERE idProducto = '$idProdcuto' ";
-        }
+       
 
         $result = $db->query($query);
 

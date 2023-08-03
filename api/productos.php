@@ -106,6 +106,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         print_r(json_encode($respuesta));
         http_response_code(400);
     } else {
+        $idUser = $_SESSION['id'];
+        $query = 'SELECT nombre FROM productos WHERE nombre = "' . $name . '" AND idUsuario = "' . $idUser . '" AND idCatalogo = "' . $idCatalogo .'" AND activo = 1';
+        $response = $db->query($query);
+        if ($response->num_rows > 0) {
+            $resp = [
+                'code' => 400,
+                'msg' => 'Ya existe un producto con el mismo nombre en este catalogo'
+            ];
+            print_r(json_encode($resp));
+            http_response_code(400);
+            return;
+        }
         $carpetaImagenes = "../images/products";
 
         //si la carpeta imagenes no existe crearla

@@ -72,11 +72,12 @@ isAuth();
             <div class="form__item">
                 <label class="form__label" for="client">Forma pago: </label>
                     <select required class="form__input" name="wayToPay" id="wayToPay">
-                        <option value="">-- Selecciona una forma de pago --</option>
+                    <option value="">-- Selecciona una forma de pago --</option>
                         <option value="1">Al contado</option>
                         <option value="2">Pagos diarios</option>
                         <option value="3">Pagos semanales</option>
-                        <option value="4">Pagos mesuales</option>
+                        <option value="4">Pagos quincenales</option>
+                        <option value="5">Pagos mesuales</option>
                     </select>
             </div>
 

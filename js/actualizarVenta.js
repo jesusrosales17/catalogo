@@ -14,8 +14,7 @@ const wayToPayInput = document.getElementById("wayToPay");
 const inputPaymentAmound = document.getElementById("inputPaymentAmount");
 const spanTotalPayments = document.getElementById("resumTotalPayments");
 
-const formSearch = document.getElementById('formSearch');
-
+const formSearch = document.getElementById("formSearch");
 
 let dataClients = [];
 let dataCatalogos = [];
@@ -102,12 +101,11 @@ const moreProduct = (product) => {
       if (dataProductSold) {
         const previousQuantity = dataProductSold.cantidadAVender; // Cantidad previa de la venta
         // if (availableStock < previousQuantity) {
-        
+
         // Si el stock es menor, la cantidad a vender será el stock disponible
         availableStock += dataProductSold.cantidadAVender;
         // }
       }
-
 
       // Verificar si el stock es menor a la cantidad previa de la venta
       p.cantidadAVender = Math.min(p.cantidadAVender + 1, availableStock);
@@ -147,6 +145,9 @@ const moreProduct = (product) => {
       text = "Pagos semanales";
       break;
     case "4":
+      text = "Pagos quincenales";
+      break;
+    case "5":
       text = "Pagos mensuales";
       break;
     default:
@@ -209,6 +210,9 @@ const reduceProduct = (product) => {
       text = "Pagos semanales";
       break;
     case "4":
+      text = "Pagos quincenales";
+      break;
+    case "5":
       text = "Pagos mensuales";
       break;
     default:
@@ -430,6 +434,9 @@ const showModal = (products) => {
       text = "Pagos semanales";
       break;
     case "4":
+      text = "Pagos quincenales";
+      break;
+    case "5":
       text = "Pagos mensuales";
       break;
     default:
@@ -437,8 +444,12 @@ const showModal = (products) => {
       break;
   }
 
-  if (wayToPayInput > 1) {
+  if (wayToPayInput.value > 1) {
     inputPaymentAmound.style.display = "block";
+    spanTotalPayments.textContent =
+    totalPayments +
+    " pagos de $" +
+    fullSalePrice / (inputPaymentAmound.querySelector("input")?.value || 1);
   } else {
     spanTotalPayments.textContent =
       dataVenta.cantidadPagos + " pago de $" + fullSalePrice;
@@ -593,6 +604,7 @@ const getData = (id) => {
       showCatalogos(dataCatalogos);
       showClientsOption(dataClients);
       if (productsSelected.length > 0) {
+        totalPayments = dataVenta.cantidadPagos;
         showModal(productsSelected);
       }
     })
@@ -649,16 +661,17 @@ const onSubmit = async (e) => {
   }
 };
 
-const searchProduct = (e) =>  {
+const searchProduct = (e) => {
   e.preventDefault();
 
   const formData = new FormData(formSearch);
-  const productSearch = formData.get('search');
+  const productSearch = formData.get("search");
 
-  
-  const productsFilter = dataProducts.filter(product => product.nombre.includes(productSearch));
-  showProducts(productsFilter, 'No hay productos con ese nombre');
-;}
+  const productsFilter = dataProducts.filter((product) =>
+    product.nombre.includes(productSearch)
+  );
+  showProducts(productsFilter, "No hay productos con ese nombre");
+};
 
 document.addEventListener("DOMContentLoaded", () => {
   idSale = new URLSearchParams(window.location.search).get("id");
@@ -703,6 +716,9 @@ wayToPayInput.addEventListener("change", (e) => {
       text = "Pagos semanales";
       break;
     case "4":
+      text = "Pagos quincenales";
+      break;
+    case "5":
       text = "Pagos mensuales";
       break;
     default:
@@ -732,4 +748,4 @@ inputPaymentAmound.addEventListener("input", (e) => {
   }
 });
 form.addEventListener("submit", onSubmit);
-formSearch.addEventListener('submit', searchProduct)
+formSearch.addEventListener("submit", searchProduct);

@@ -178,7 +178,6 @@ const showModalForm = (updating = false, product = {}) => {
     form.querySelector('#brand').value = product.marca;
     form.querySelector('#description').value = product.descripcion;
     form.querySelector('#dateAlta').value = product.fechaAlta;
-    form.querySelector('#dateBaja').value = product.fechaBaja;
     form.querySelector('#type').value = product.tipo;
     form.querySelector('#promocion').value = product.promocion;
     form.querySelector('#buyPrice').value = product.precioCompra;
@@ -200,7 +199,7 @@ const closeModalForm = () => {
   form.querySelector('#brand').value = "";
   form.querySelector('#description').value = "";
   form.querySelector('#dateAlta').value = "";
-  form.querySelector('#dateBaja').value = "";
+  
   form.querySelector('#type').value = "";
   form.querySelector('#promocion').value = "";
   form.querySelector('#buyPrice').value = "";

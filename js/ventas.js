@@ -355,6 +355,9 @@ const showModal = (products, sale) => {
       text = "Pagos semanales";
       break;
     case "4":
+      text = "Pagos quincenales";
+      break;
+      case "5":
       text = "Pagos mensuales";
       break;
     default:
