@@ -22,6 +22,9 @@ isAuth();
 
     <main class="panel">
         <?php include('./template/menu.php') ?>
+        <h1 class='index-title'>
+            Bienvenida <?php echo $_SESSION['name'] ?>
+        </h1>
     </main>
 
 </body>

@@ -68,6 +68,7 @@ body {
 .flor--1 {
     bottom: 0;
     right: 0;
+    opacity: .2;
 }
 .flor--2 {
     top: 0;
@@ -233,4 +234,9 @@ tr {
 }
 li {
    z-index: 20; 
+}
+.index-title {
+    font-size: 3.5rem;
+    text-align: center;
+    margin-top: 8rem;
 }

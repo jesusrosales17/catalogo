@@ -71,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($result) {
             $resp = [
                 "code" => 200,
-                "msg" => "Servicio actualizado  correctamente",
+                "msg" => "Producto actualizado  correctamente",
             ];
             print_r(json_encode($resp));
             http_response_code(200);
