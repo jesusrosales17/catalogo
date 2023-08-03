@@ -18,8 +18,15 @@ isAuth();
 </head>
 
 <body>
-    <img src="../images/flor.png" alt="flor" class="flor flor--1">
     <img src="../images/flor.png" alt="flor" class="flor flor--2">
+
+    <div class="spinner-container" style="display: none;" id="spinner">
+        <div class="lds-facebook">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
 
 
     <main class="panel catalogos">
@@ -34,7 +41,7 @@ isAuth();
 
         <section class="container overflow-2">
             <ul class="catalogos__list" id="containerCatalogos">
-                
+
             </ul>
         </section>
 

@@ -26,6 +26,14 @@ let totalProductsSale = 0;
 let fullSalePrice = 0;
 let totalPayments = 1;
 
+const showSpinner = () => {
+  document.getElementById('spinner').style.display = 'flex';
+}
+
+const hideSpinner = () => {
+  document.getElementById('spinner').style.display = 'none';
+}
+
 // Muestra el modal para agregar o actualizar el cliente
 
 const validateForm = (form) => {
@@ -474,6 +482,7 @@ const getData = () => {
     fetchDataFromAPI(urlProductos),
   ];
 
+  showSpinner();
   Promise.all(promises)
     .then((results) => {
       dataClientes = results[0].filter(client => client.activo === '1');
@@ -482,6 +491,7 @@ const getData = () => {
 
       showCatalogos(dataCatalogos);
       showClientsOption(dataClientes);
+      hideSpinner();
     })
     .catch((error) => {
       // Manejar errores si alguna de las promesas falla
@@ -510,12 +520,13 @@ const onSubmit = async (e) => {
   const formData = new FormData(form);
   formData.append("pedido", JSON.stringify(productsSelected));
 
+  showSpinner();
   const response = await fetch(`http://sistema.test/api/ventas.php`, {
     method: "POST",
     body: formData,
   });
   const result = await response.json();
-
+  hideSpinner();
   if (result.code === 200) {
     Swal.fire({
       icon: "success",

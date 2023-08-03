@@ -10,6 +10,20 @@ let arrayCatalogos = [];
 let isUpdating = false;
 let id;
 
+const showSpinner = () => {
+  document.getElementById('spinner').style.display = 'flex';
+}
+
+const hideSpinner = () => {
+  document.getElementById('spinner').style.display = 'none';
+}
+
+const closeModal = () => {
+  modal.style.display = "none";
+  inputName.value = "";
+  isUpdating = false;
+};
+
 // Agregar o actualizar catalogo
 const onSubmit = async (e) => {
   e.preventDefault();
@@ -29,6 +43,7 @@ const onSubmit = async (e) => {
     formData.append("id", id);
   }
 
+  showSpinner();
   const response = await fetch(
     `http://sistema.test/api/${
       isUpdating ? "updateCatalogo.php" : "catalogo.php"
@@ -39,13 +54,15 @@ const onSubmit = async (e) => {
     }
   );
   const result = await response.json();
-
+  
+  hideSpinner();
   if (result.code === 200) {
     Swal.fire({
       icon: "success",
       title: "Todo listo!",
       text: result.msg,
     }).then(() => {
+      closeModal();
       location.reload();
     });
   } else {
@@ -75,11 +92,7 @@ const showModal = (updating = false, catalogo = {}) => {
   }
 };
 // Cierra el modal
-const closeModal = () => {
-  modal.style.display = "none";
-  inputName.value = "";
-  isUpdating = false;
-};
+
 
 // HTML de cada catologo
 const createCatalogoHTML = (catalogo) => {
@@ -153,6 +166,7 @@ const deleteCatalogo = (id) => {
     cancelButtonText: "cancelar",
   }).then(async (result) => {
     if (result.isConfirmed) {
+      showSpinner();
       const response = await fetch(
         `http://sistema.test/api/deleteCatalogo.php`,
         {
@@ -161,7 +175,7 @@ const deleteCatalogo = (id) => {
         }
       );
       const result = await response.json();
-
+      hideSpinner();
       if (result.code === 200) {
         Swal.fire({
           icon: "success",
@@ -192,9 +206,13 @@ const getCatalogos = async () => {
   const result = await response.json();
   arrayCatalogos = [...result.filter(catalogo => catalogo.activo === '1')];
   showCatalogos(arrayCatalogos);
+  hideSpinner();
 };
 
 form.addEventListener("submit", onSubmit);
 btnCloseModal.addEventListener("click", closeModal);
 btnShowModal.addEventListener("click", () => showModal());
-document.addEventListener("DOMContentLoaded", getCatalogos);
+document.addEventListener("DOMContentLoaded", () => {
+  showSpinner();
+  getCatalogos();
+});

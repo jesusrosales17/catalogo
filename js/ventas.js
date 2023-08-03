@@ -26,6 +26,14 @@ let isUpdatingPayment = false;
 let idSale = null;
 let idPayment = null;
 
+const showSpinner = () => {
+  document.getElementById('spinner').style.display = 'flex';
+}
+
+const hideSpinner = () => {
+  document.getElementById('spinner').style.display = 'none';
+}
+
 // se encarga de agregar y actualizar los pagos
 const onSubmit = async (e) => {
   e.preventDefault();
@@ -45,6 +53,7 @@ const onSubmit = async (e) => {
     formData.append("idPayment", idPayment);
   }
 
+  showSpinner();
   const response = await fetch(
     `http://sistema.test/api/${
       isUpdatingPayment ? "updatePago.php" : "pagos.php"
@@ -55,7 +64,7 @@ const onSubmit = async (e) => {
     }
   );
   const result = await response.json();
-
+  hideSpinner();
   if (result.code === 200) {
     Swal.fire({
       icon: "success",
@@ -115,12 +124,13 @@ const deletePayment = () => {
     cancelButtonText: "cancelar",
   }).then(async (result) => {
     if (result.isConfirmed) {
+      showSpinner();
       const response = await fetch(`http://sistema.test/api/deletePago.php`, {
         method: "POST",
         body: JSON.stringify({ idPayment: idPayment }),
       });
       const result = await response.json();
-
+      hideSpinner();
       if (result.code === 200) {
         Swal.fire({
           icon: "success",
@@ -515,6 +525,7 @@ const getData = () => {
     fetchDataFromAPI(urlPagos),
   ];
 
+  showSpinner();
   Promise.all(promises)
     .then((results) => {
       dataClients = results[0];
@@ -525,6 +536,7 @@ const getData = () => {
 
       showSales(dataSales);
       showClientsOption(dataClients);
+      hideSpinner();
     })
     .catch((error) => {
       // Manejar errores si alguna de las promesas falla
@@ -670,7 +682,9 @@ function exportToExcel() {
 btnExportSales.addEventListener("click", generatePDF);
 
 document.addEventListener("DOMContentLoaded", async () => {
+
   getData();
+  
 });
 
 selectClient.addEventListener("change", (e) => {

@@ -49,9 +49,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
-    <img src="./images/flor.png" alt="flor" class="flor flor--1">
+    
     <img src="./images/flor.png" alt="flor" class="flor flor--2">
-
+    
 
     <main class="panel updatePassword">
         <?php include('./template/menu.php') ?>

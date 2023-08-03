@@ -19,6 +19,13 @@ let isUpdating = false;
 let imgActual = '';
 let idForActions = '';
 
+const showSpinner = () => {
+  document.getElementById('spinner').style.display = 'flex';
+}
+
+const hideSpinner = () => {
+  document.getElementById('spinner').style.display = 'none';
+}
 
 const closeModalProduct = () => {
     modalProduct.style.display = "none";
@@ -119,6 +126,7 @@ const deleteProduct = () => {
     cancelButtonText: "cancelar",
   }).then(async (result) => {
     if (result.isConfirmed) {
+      showSpinner();
       const response = await fetch(
         `http://sistema.test/api/deleteProducto.php`,
         {
@@ -128,6 +136,7 @@ const deleteProduct = () => {
       );
       const result = await response.json();
 
+      hideSpinner();
       if (result.code === 200) {
         Swal.fire({
           icon: "success",
@@ -283,6 +292,7 @@ const onSubmit = async (e) => {
       formData.append("idCatalogo", idByUrl);
   }
 
+  showSpinner();
   const response = await fetch(
     `http://sistema.test/api/${
       isUpdating ? "updateProducto.php" : "productos.php"
@@ -293,7 +303,7 @@ const onSubmit = async (e) => {
     }
   );
   const result = await response.json();
-   
+   hideSpinner();
 
   if (result.code === 200) {
     Swal.fire({
@@ -326,8 +336,10 @@ const searchProduct = (e) =>  {
 
 
 document.addEventListener("DOMContentLoaded", async () => {
+  showSpinner();
   ArrayProducts = await getProductsFromCatalogoById(idByUrl);
   showProducts(ArrayProducts);
+  hideSpinner();
 });
 
 btnShowModalForm.addEventListener("click", () => showModalForm());

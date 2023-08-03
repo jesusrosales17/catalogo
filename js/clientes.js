@@ -12,6 +12,14 @@ let arrayClients = [];
 let isUpdating;
 let idUpdate;
 
+const showSpinner = () => {
+  document.getElementById('spinner').style.display = 'flex';
+}
+
+const hideSpinner = () => {
+  document.getElementById('spinner').style.display = 'none';
+}
+
 // Muestra el modal para agregar o actualizar el cliente
 const showModal = (updating = false, catalogo = {}) => {
   modal.style.display = "flex";
@@ -53,6 +61,7 @@ const deleteClient = (id) => {
     cancelButtonText: "cancelar",
   }).then(async (result) => {
     if (result.isConfirmed) {
+      showSpinner();
       const response = await fetch(
         `http://sistema.test/api/deleteCliente.php`,
         {
@@ -61,7 +70,7 @@ const deleteClient = (id) => {
         }
       );
       const result = await response.json();
-
+        hideSpinner();
       if (result.code === 200) {
         Swal.fire({
           icon: "success",
@@ -211,6 +220,7 @@ const onSubmit = async (e) => {
     formData.append("id", idUpdate);
   }
 
+  showSpinner();
   const response = await fetch(
     `http://sistema.test/api/${
       isUpdating ? "updateCliente.php" : "clientes.php"
@@ -221,7 +231,7 @@ const onSubmit = async (e) => {
     }
   );
   const result = await response.json();
-
+    hideSpinner();
   if (result.code === 200) {
     Swal.fire({
       icon: "success",
@@ -263,7 +273,9 @@ btnShowModalForm.addEventListener("click", () => showModal());
 btnCloseModalForm.addEventListener("click", closeModal);
 form.addEventListener("submit", onSubmit);
 document.addEventListener("DOMContentLoaded", async () => {
+  showSpinner();
   arrayClients = await getClients();
   showClients(arrayClients);
+  hideSpinner();
 });
 formSearch.addEventListener("submit", searchProduct);

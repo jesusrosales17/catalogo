@@ -1,6 +1,14 @@
 const btnCloseModal = document.getElementById("closeModal");
 const modal = document.getElementById("modal");
 
+const showSpinner = () => {
+  document.getElementById('spinner').style.display = 'flex';
+}
+
+const hideSpinner = () => {
+  document.getElementById('spinner').style.display = 'none';
+}
+
 const showModal = (client) => {
   modal.style.display = "flex";
   document.getElementById("spanNameClient").textContent = client.nombreCompleto;
@@ -18,8 +26,10 @@ function getBirthdayThisYear(birthday) {
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
+  showSpinner();
   const response = await fetch("http://sistema.test/api/clientes.php");
   let result = await response.json();
+  hideSpinner();
   result = result.filter(client => client.activo !== '0');
 
   const events = result.map((client) => {
