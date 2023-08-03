@@ -49,10 +49,9 @@ const onSubmit = async (e) => {
       location.reload();
     });
   } else {
-    console.log("ocurrio un error");
     Swal.fire({
       icon: "error",
-      title: "Faltan datos!",
+      title: "Ocurrio un error!",
       text:
         result.msg || "Ocurrio un error inesperado intentelo denuevo más tarde",
     });

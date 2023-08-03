@@ -21,7 +21,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   const response = await fetch("http://sistema.test/api/clientes.php");
   let result = await response.json();
   result = result.filter(client => client.activo !== '0');
-  console.log();
 
   const events = result.map((client) => {
     return {

@@ -52,6 +52,10 @@ const createProductHtml = (product) => {
   tdName.classList.add("table__td");
   tdName.textContent = product.nombre;
 
+  const tdAmount = document.createElement("td");
+  tdAmount.classList.add("table__td");
+  tdAmount.textContent = product.cantidadProducto;
+
   const tdBrand = document.createElement("td");
   tdBrand.classList.add("table__td");
   tdBrand.textContent = product.marca;
@@ -64,11 +68,13 @@ const createProductHtml = (product) => {
   tdActions.classList.add("table__td", "table__actions");
   const img = document.createElement("img");
   img.addEventListener('click', () => showModalProduct(product));
+  img.setAttribute('loading', 'lazy')
   img.src = "../images/view.png";
   img.alt = "Ver informacion";
 
   tdActions.appendChild(img);
   tr.appendChild(tdName);
+  tr.appendChild(tdAmount);
   tr.appendChild(tdBrand);
   tr.appendChild(tdPrice);
   tr.appendChild(tdActions);
@@ -80,7 +86,6 @@ const showProducts = (
   products,
   msgEmpty = "No hay productos en este catalogo"
 ) => {
-  console.log(products)
 
   const errorsAlerts = document.querySelectorAll(".productos__empty");
   errorsAlerts.forEach((error) => error.remove());
@@ -114,7 +119,6 @@ const deleteProduct = () => {
     cancelButtonText: "cancelar",
   }).then(async (result) => {
     if (result.isConfirmed) {
-      console.log(idForActions)
       const response = await fetch(
         `http://sistema.test/api/deleteProducto.php`,
         {

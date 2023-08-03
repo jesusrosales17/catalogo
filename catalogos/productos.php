@@ -39,6 +39,7 @@ isAuth();
                 <thead class="table__head">
                     <tr class="table__tr table__tr--head">
                         <th class="table__th">Nombre</th>
+                        <th class="table__th">Cant. Disponible</th>
                         <th class="table__th">Marca</th>
                         <th class="table__th">Precio Venta</th>
                         <th class="table__th"></th>

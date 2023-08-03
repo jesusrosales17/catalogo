@@ -69,6 +69,7 @@ body {
     bottom: 0;
     right: 0;
     opacity: .2;
+    display: none;
 }
 .flor--2 {
     top: 0;

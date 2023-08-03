@@ -102,13 +102,12 @@ const moreProduct = (product) => {
       if (dataProductSold) {
         const previousQuantity = dataProductSold.cantidadAVender; // Cantidad previa de la venta
         // if (availableStock < previousQuantity) {
-        //   console.log(dataProductSold.cantidadAVender)
+        
         // Si el stock es menor, la cantidad a vender será el stock disponible
         availableStock += dataProductSold.cantidadAVender;
         // }
       }
 
-      console.log(availableStock);
 
       // Verificar si el stock es menor a la cantidad previa de la venta
       p.cantidadAVender = Math.min(p.cantidadAVender + 1, availableStock);
@@ -630,7 +629,6 @@ const onSubmit = async (e) => {
     method: "POST",
     body: formData,
   });
-  console.log(productsSelected);
   const result = await response.json();
 
   if (result.code === 200) {
@@ -659,7 +657,6 @@ const searchProduct = (e) =>  {
 
   
   const productsFilter = dataProducts.filter(product => product.nombre.includes(productSearch));
-  console.log(productSearch);
   showProducts(productsFilter, 'No hay productos con ese nombre');
 ;}
 
@@ -669,7 +666,6 @@ document.addEventListener("DOMContentLoaded", () => {
   getData(idSale);
 });
 selectCatalogo.addEventListener("change", () => {
-  console.log(dataProducts);
   showProducts(
     dataProducts.filter(
       (product) =>

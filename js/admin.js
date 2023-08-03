@@ -65,7 +65,6 @@ const createUserHTML = (user) => {
   btnEdit.addEventListener("click", () => {
     isUpdating = true;
     idUpdate = user.idUsuario;
-    console.log(idUpdate)
     showModal();
   });
 

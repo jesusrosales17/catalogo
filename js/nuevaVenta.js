@@ -89,7 +89,6 @@ const moreProduct = (product) => {
 
   productsSelected.forEach((product) => {
     totalProductsSale += product.cantidadAVender;
-    console.log(product.cantidadAVender);
 
     fullSalePrice +=
       dataProductos.find((p) => product.idProducto === p.idProducto)
@@ -152,7 +151,6 @@ const reduceProduct = (product) => {
 
   productsSelected.forEach((product) => {
     totalProductsSale += product.cantidadAVender;
-    console.log(product.cantidadAVender);
 
     fullSalePrice +=
       dataProductos.find((p) => product.idProducto === p.idProducto)
@@ -538,7 +536,6 @@ const searchProduct = (e) =>  {
 
   
   const productsFilter = dataProductos.filter(product => product.nombre.includes(productSearch));
-  console.log(productSearch);
   showProducts(productsFilter, 'No hay productos con ese nombre');
 ;}
 

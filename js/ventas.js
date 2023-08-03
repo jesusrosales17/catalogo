@@ -83,7 +83,6 @@ const closeModalPay = () => {
 };
 // muestra el modal de pagos
 const showModalPay = (sale) => {
-  console.log(sale);
   modalPay.style.display = "flex";
 
   if (isUpdatingPayment) {
@@ -116,7 +115,6 @@ const deletePayment = () => {
     cancelButtonText: "cancelar",
   }).then(async (result) => {
     if (result.isConfirmed) {
-      console.log(idPayment);
       const response = await fetch(`http://sistema.test/api/deletePago.php`, {
         method: "POST",
         body: JSON.stringify({ idPayment: idPayment }),
@@ -297,7 +295,6 @@ const showModalHistory = (sale) => {
 };
 // muestra los productos vendidos
 function showProductsSale(products, sale) {
-  console.log(products);
   while (listSale.firstChild) {
     listSale.removeChild(listSale.firstChild);
   }
@@ -548,7 +545,6 @@ function generatePDF() {
 
   const todaySalesArray = todaySales.map(sale => {
     const nameClient = dataClients.find(client => client.idCliente === sale.idCliente).nombreCompleto;
-    console.log(sale)
     return [sale.fechaVenta, nameClient, sale.totalDeVenta]
   })
 
@@ -629,7 +625,6 @@ function exportToExcel() {
 
   const todaySalesArray = todaySales.map(sale => {
     const nameClient = dataClients.find(client => client.idCliente === sale.idCliente).nombreCompleto;
-    console.log(sale)
     return [sale.fechaVenta, nameClient, sale.totalDeVenta]
   })
 
