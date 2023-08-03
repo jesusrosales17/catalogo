@@ -22,20 +22,20 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     // Obtener el último segmento (el ID)
     $id = end($segments);
 
-   
+
     $idUser = $_SESSION['id'];
 
-    if(is_numeric($id)) {
+    if (is_numeric($id)) {
 
         $query = "SELECT idCatalogo FROM catalogos WHERE idCatalogo = '$id'  AND activo='1' AND idUsuario = '$idUser'";
-    
+
         $resp =  $db->query($query);
         if ($resp->num_rows) {
-    
+
             $query = "SELECT * FROM productos WHERE idCatalogo = '$id ' AND activo='1' AND idUsuario = '$idUser'";
             $resp =  $db->query($query);
-    
-    
+
+
             $data = [];
             while ($row = $resp->fetch_assoc()) {
                 $data[] = $row;
@@ -63,11 +63,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         while ($row = $resp->fetch_assoc()) {
             $data[] = $row;
         }
-        
+
         print_r(json_encode($data));
         http_response_code(200);
     }
-
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -78,7 +77,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $brand = trim($db->escape_string($_POST["brand"]));
     $description = trim($db->escape_string($_POST["description"]));
     $dateAlta = trim($db->escape_string($_POST["dateAlta"]));
-    $dateBaja = trim($db->escape_string($_POST["dateBaja"]));
     $type = trim($db->escape_string($_POST["type"]));
     $promocion = trim($db->escape_string($_POST["promocion"]));
     $buyPrice = trim($db->escape_string($_POST["buyPrice"]));
@@ -97,9 +95,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $buyPrice === '' ||
         $salePrice === '' ||
         $amound === '' ||
-        !$imagen 
+        !$imagen
     ) {
-        var_dump($brand !== '' );
+        var_dump($brand !== '');
         //SI no ingreso los datos obligarios mandar el mensaje correspondiente
         $respuesta = [
             "code" => 400,
@@ -128,16 +126,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         //realizar la peticion
         $idUser = $_SESSION['id'];
-        $query = '';
-        if($dateBaja === '') {
-            $query = "INSERT INTO productos (idCatalogo,nombre, imagen, marca, descripcion, fechaAlta, tipo, promocion, precioCompra, precioVenta, cantidadProducto, idUsuario)
-            VALUES ('$idCatalogo', '$name', '$nombreImagen', '$brand', '$description', '$dateAlta', '$type', '$promocion', '$buyPrice', '$salePrice', '$amound', '$idUser')";
-        } else {
-        $query = "INSERT INTO productos (idCatalogo,nombre, imagen, marca, descripcion, fechaAlta, tipo, promocion, precioCompra, precioVenta, fechaBaja, cantidadProducto, idUsuario)
-         VALUES ('$idCatalogo', '$name', '$nombreImagen', '$brand', '$description', '$dateAlta', '$type', '$promocion', '$buyPrice', '$salePrice', '$dateBaja', '$amound', '$idUser')";
-        }
 
-        
+        $query = "INSERT INTO productos (idCatalogo,nombre, imagen, marca, descripcion, fechaAlta, tipo, promocion, precioCompra, precioVenta, cantidadProducto, idUsuario)
+            VALUES ('$idCatalogo', '$name', '$nombreImagen', '$brand', '$description', '$dateAlta', '$type', '$promocion', '$buyPrice', '$salePrice', '$amound', '$idUser')";
+
+
+
         $result = $db->query($query);
 
 

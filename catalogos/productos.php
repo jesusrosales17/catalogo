@@ -82,10 +82,6 @@ isAuth();
                     <input type="date" name="dateAlta" id="dateAlta" class="form__input">
                 </div>
 
-                <div class="form__item">
-                    <label for="dateBaja" class="form__label">Fecha de baja:</label>
-                    <input type="date" name="dateBaja" id="dateBaja" class="form__input" data-opcional = 'true'>
-                </div>
 
                 <div class="form__item">
                     <label for="type" class="form__label">Tipo:</label>
@@ -141,10 +137,7 @@ isAuth();
                     Fecha alta:
                     <span class="modal__span" data-attribute="fechaAlta"></span>
                 </p>
-                <p class="modal__p">
-                    Feha baja:
-                    <span class="modal__span" data-attribute="fechaBaja"></span>
-                </p>
+                
                 <p class="modal__p">
                     Tipo:
                     <span class="modal__span" data-attribute="tipo"></span>

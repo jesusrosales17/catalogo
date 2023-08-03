@@ -215,8 +215,7 @@ const validateForm = (form) => {
 
   form.querySelectorAll("input").forEach((input) => {
     if (input.type !== "submit") {
-      if (input.value.trim() === "" && !input.dataset.opcional ) {
-        console.log(input)
+      if (input.value.trim() === "" ) {
         if(input.type === 'file' && !isUpdating || input.type !== 'file') {
             resp = {
               error: true,
